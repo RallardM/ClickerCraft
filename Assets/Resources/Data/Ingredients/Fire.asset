@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Fire
   m_EditorClassIdentifier: 
   Name: Fire
-  Description: One of the five basic ingredient.
   Sprite: {fileID: 2107904835, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
-  Quantity: 1
   MaxQuantity: 99
   IngredientType: 0
+  Receipe: []
+  isCraftable: 1

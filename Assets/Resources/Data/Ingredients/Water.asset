@@ -17,3 +17,4 @@ MonoBehaviour:
   MaxQuantity: 99
   IngredientType: 3
   Receipe: []
+  isCraftable: 1

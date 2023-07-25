@@ -12,4 +12,5 @@ public class IngredientData : ScriptableObject
     public int MaxQuantity;
     public EBasicIngredient IngredientType;
     public List<IngredientData> Receipe; // TODO: add needed ingredient for receipe in list 
+    public bool isCraftable;
 }

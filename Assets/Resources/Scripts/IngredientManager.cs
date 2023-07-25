@@ -37,9 +37,10 @@ public class IngredientManager : MonoBehaviour
         }
     }
 
-    public static void AddIngredient(EBasicIngredient ingredient)
+    public static void AddIngredient(IngredientData ingredient)
     {
-        Debug.Log("Add ingredient : " + ingredient);
+        Debug.Log("Add ingredient : " + ingredient.Name);
+
         m_fire++;
     }
 }

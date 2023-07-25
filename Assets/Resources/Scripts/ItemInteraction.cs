@@ -3,49 +3,46 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemInteraction : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class ItemInteraction : MonoBehaviour//, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler // TODO Remi : For my portefolio end of session
 {
     private IngredientData m_data;
     [SerializeField] IngredientData m_ingredientData;
 
     public IngredientData GetIngredientData() { return m_ingredientData; }
 
-    //private bool m_isDragged = false;
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnPointerClick");
-
-        //m_isDragged = false;
 
         if (!CompareTag("Element"))
         {
             return;
         }
 
-        IngredientManager.AddIngredient(m_ingredientData.IngredientType);
+        IngredientData clickedIngredient = GetIngredientData();
+        IngredientManager.AddIngredient(clickedIngredient);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        Debug.Log("OnBeginDrag");
+    // TODO Remi : For my portefolio end of session
+    //public void OnBeginDrag(PointerEventData eventData)
+    //{
+    //    Debug.Log("OnBeginDrag");
 
-        //m_isDragged = true;
 
-        if (!CompareTag("Element"))
-        {
-            return;
-        }
+    //    if (!CompareTag("Element"))
+    //    {
+    //        return;
+    //    }
 
-    }
+    //}
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        Debug.Log("OnDrag");
-        transform.position = Input.mousePosition;
-    }
+    //public void OnDrag(PointerEventData eventData)
+    //{
+    //    Debug.Log("OnDrag");
+    //    transform.position = Input.mousePosition;
+    //}
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        Debug.Log("OnEndDrag");
-    }
+    //public void OnEndDrag(PointerEventData eventData)
+    //{
+    //    Debug.Log("OnEndDrag");
+    //}
 }
