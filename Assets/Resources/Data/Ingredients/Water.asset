@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   Name: Water
-  Sprite: {fileID: 1131425138, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
+  Sprite: {fileID: -1462466311, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
   MaxQuantity: 99
   IngredientType: 3
   Receipe: []
   isCraftable: 1
+  isStackable: 1

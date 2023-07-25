@@ -13,4 +13,5 @@ public class IngredientData : ScriptableObject
     public EBasicIngredient IngredientType;
     public List<IngredientData> Receipe; // TODO: add needed ingredient for receipe in list 
     public bool isCraftable;
+    public bool isStackable;
 }

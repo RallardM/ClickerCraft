@@ -848,9 +848,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852521, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 55f6e85bc9bcd4c4e94f538d75094415, type: 2}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Name
       value: EarthIngredient
+      objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_TagString
+      value: BaseIngredient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
@@ -1555,9 +1563,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852521, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 7775538707b840148b8efbf9745484bc, type: 2}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Name
       value: WaterIngredient
+      objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_TagString
+      value: BaseIngredient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
@@ -2284,6 +2300,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireIngredient
       objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_TagString
+      value: BaseIngredient
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
 --- !u!1 &1051768404
@@ -2584,9 +2604,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852521, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 996e3f63d78713b45887e238a5839b26, type: 2}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Name
-      value: FireIngredient (3)
+      value: AirIngredient
+      objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_TagString
+      value: BaseIngredient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
@@ -3236,7 +3264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5033187412968288018, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_Name
-      value: SquareGrid
+      value: RightSquareGrid
       objectReference: {fileID: 0}
     - target: {fileID: 5763152352151581207, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3404,9 +3432,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852521, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 343f962c3a866204eb317efe6a381037, type: 2}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Name
-      value: FireIngredient (4)
+      value: EtherIngredient
+      objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_TagString
+      value: BaseIngredient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
@@ -4312,8 +4348,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1877538088}
+  - component: {fileID: 1877538089}
   m_Layer: 0
-  m_Name: InventoryGrids
+  m_Name: IngredientManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4335,6 +4372,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1877538089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877538087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 264e24006028bdb4889c31df45821a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1912679857 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7488704487427452381, guid: 7797ceef67facb54b991c1d13bab0c60, type: 3}

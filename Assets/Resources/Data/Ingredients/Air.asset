@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Air
   m_EditorClassIdentifier: 
   Name: Air
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 1131425138, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
   MaxQuantity: 99
   IngredientType: 1
   Receipe: []
   isCraftable: 1
+  isStackable: 1

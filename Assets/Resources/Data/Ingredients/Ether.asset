@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Ether
   m_EditorClassIdentifier: 
   Name: Ether
-  Sprite: {fileID: -1462466311, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
+  Sprite: {fileID: 2105180315, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
   MaxQuantity: 99
   IngredientType: 4
   Receipe: []
   isCraftable: 1
+  isStackable: 1

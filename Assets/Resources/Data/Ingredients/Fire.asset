@@ -18,3 +18,4 @@ MonoBehaviour:
   IngredientType: 0
   Receipe: []
   isCraftable: 1
+  isStackable: 1
