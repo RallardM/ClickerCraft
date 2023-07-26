@@ -5,10 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - BaseIngredient
-  - FirstChauldronSlot
-  - SecondChauldronSlot
-  - ThirdChauldronSlot
-  - FourthChauldronSlot
   layers:
   - Default
   - TransparentFX

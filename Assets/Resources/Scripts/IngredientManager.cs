@@ -1,49 +1,42 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Net.Http.Headers;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class IngredientManager : MonoBehaviour
 {
-    [SerializeField] static List<IngredientData> m_chauldron = new List<IngredientData>();
+    static List<IngredientData> m_ingredientsInCauldron = new List<IngredientData>();
+    static List<Transform> m_cauldronSlots = new List<Transform>();
+
     private static IngredientManager _Instance;
 
-    [SerializeField] private static GameObject m_fireIngredientPrefab;
-    [SerializeField] private static GameObject m_airIngredientPrefab;
-    [SerializeField] private static GameObject m_earthIngredientPrefab;
-    [SerializeField] private static GameObject m_waterIngredientPrefab;
-    [SerializeField] private static GameObject m_therIngredientPrefab;
+    [SerializeField] private GameObject m_ingredientPrefab;
 
-    static List<Transform> m_chauldronSlots;
-    private static Transform m_firstChauldronSlot;
-    private static Transform m_secondChauldronSlot;
-    private static Transform m_thirdChauldronSlot;
-    private static Transform m_fourthChauldronSlot;
+    private static Transform m_firstCauldronSlot;
+    private static Transform m_secondCauldronSlot;
+    private static Transform m_thirdCauldronSlot;
+    private static Transform m_fourthCauldronSlot;
 
-    //private static uint m_chauldronPreviousSize = 0;
+    private static uint m_fireCauldronCount = 0;
+    private static uint m_earthCauldronCount = 0;
+    private static uint m_waterCauldronCount = 0;
+    private static uint m_airCauldronCount = 0;
+    private static uint m_etherCauldronCount = 0;
 
-    private static uint m_fireChauldronCount = 0;
-    private static uint m_earthChauldronCount = 0;
-    private static uint m_waterChauldronCount = 0;
-    private static uint m_airChauldronCount = 0;
-    private static uint m_etherChauldronCount = 0;
+    private static uint m_cauldronPreviousSize = 0;
 
     private void Awake()
     {
-        m_firstChauldronSlot = GameObject.FindGameObjectWithTag("FirstChauldronSlot").transform;
-        m_secondChauldronSlot = GameObject.FindGameObjectWithTag("SecondChauldronSlot").transform;
-        m_thirdChauldronSlot = GameObject.FindGameObjectWithTag("ThirdChauldronSlot").transform;
-        m_fourthChauldronSlot = GameObject.FindGameObjectWithTag("FourthChauldronSlot").transform;
+        m_firstCauldronSlot = transform.Find("Canvas/CauldronSlots/TopInventorySlot");
+        m_secondCauldronSlot = transform.Find("Canvas/CauldronSlots/LeftInventorySlot");
+        m_thirdCauldronSlot = transform.Find("Canvas/CauldronSlots/RightInventorySlot");
+        m_fourthCauldronSlot = transform.Find("Canvas/CauldronSlots/BottomInventorySlot");
 
-        m_chauldronSlots = new List<Transform>
+        m_cauldronSlots = new List<Transform>
         {
-            m_firstChauldronSlot,
-            m_secondChauldronSlot,
-            m_thirdChauldronSlot,
-            m_fourthChauldronSlot
+            m_firstCauldronSlot,
+            m_secondCauldronSlot,
+            m_thirdCauldronSlot,
+            m_fourthCauldronSlot
         };
     }
 
@@ -59,29 +52,31 @@ public class IngredientManager : MonoBehaviour
 
     public void Update()
     {
-        // Return if the chauldron is empty
-        if (m_chauldron.Count == 0)
+        // Return if the cauldron is empty
+        if (m_ingredientsInCauldron.Count == 0)
         {
             return;
         }
 
-        // If the chauldron is not empty
+        // If the cauldron is not empty
 
-        //uint totalNumberInChauldron = GetNumberOfStackedIngredients();
-        //if (m_chauldronPreviousSize != totalNumberInChauldron)
-        //{
-        //    // Update the chauldron content
-        //    //ResetChauldronContent();
-        //    UpdateChauldronContent();
-        //}
+        // Return if the cauldron size has not changed
+        if (m_cauldronPreviousSize == m_ingredientsInCauldron.Count)
+        {
+            return;
+        }
 
-        foreach (IngredientData ingredientData in m_chauldron)
-        { 
-            foreach (Transform chauldronSlots in m_chauldronSlots)
-            {
-                GetIngredientPrefab(ingredientData);
-                //chauldronSlots.Instantiate(m_chauldronSlots);
-            }
+        m_cauldronPreviousSize = (uint)m_ingredientsInCauldron.Count;
+
+        Debug.Log("Ingerdients in cauldron : " + m_ingredientsInCauldron.Count);
+
+        for (int i = 0; i < m_ingredientsInCauldron.Count; i++)
+        {
+            Transform cauldronSlot = m_cauldronSlots[i];
+            IngredientData ingredientData = m_ingredientsInCauldron[i];
+            //GameObject ingredientPrefab = GetIngredientData(ingredientData);
+            IngredientUI ingredientUI = Instantiate(m_ingredientPrefab, cauldronSlot).GetComponent<IngredientUI>();
+            ingredientUI.SetIngredientData(ingredientData);
         }
     }
 
@@ -90,12 +85,12 @@ public class IngredientManager : MonoBehaviour
         return 0;
     }
 
-    //private void ResetChauldronContent()
+    //private void ResetCauldronContent()
     //{
 
     //}
 
-    private void UpdateChauldronContent()
+    private void UpdateCauldronContent()
     {
         
     }
@@ -127,53 +122,37 @@ public class IngredientManager : MonoBehaviour
             return;
         }
 
-        if (m_chauldron.Count == 4)
+        if (m_ingredientsInCauldron.Count == 4)
         {
-            Debug.Log("Chauldron is full");
+            Debug.Log("Cauldron is full");
             return;
         }
 
-        if (m_chauldron.Contains(ingredient))
+        Debug.Log("Cauldron is not full");
+
+        if (m_ingredientsInCauldron.Contains(ingredient))
         {
-            // If the chauldron contains the ingredient
+            // If the cauldron contains the ingredient
             // verify if it's stackable
             // and if it's max quantity is not reached
             uint ingredientCount = GetIngredientCount(ingredient);
 
             if (ingredient.isStackable && ingredientCount < ingredient.MaxQuantity)
             {
-                m_chauldron.Add(ingredient);
+                m_ingredientsInCauldron.Add(ingredient);
                 IncrementeIngredientCounter(ingredient);
-                //m_chauldronPreviousSize++;
+                Debug.Log("Ingredient added to the cauldron");
+                //m_cauldronPreviousSize++;
             }
             return;
         }
 
-        // If the ingredient is not in the chauldron
+        // If the ingredient is not in the cauldron
         // add it for the first time
-        m_chauldron.Add(ingredient);
+        Debug.Log("Ingredient added to the cauldron");
+        m_ingredientsInCauldron.Add(ingredient);
         IncrementeIngredientCounter(ingredient);
-        //m_chauldronPreviousSize++;
-    }
-
-    private static uint GetIngredientCount(IngredientData ingredient)
-    {
-        switch (ingredient.IngredientType)
-        {
-            case EBasicIngredient.Fire:
-                return m_fireChauldronCount;
-            case EBasicIngredient.Air:
-                return m_airChauldronCount;
-            case EBasicIngredient.Earth:
-                return m_earthChauldronCount;
-            case EBasicIngredient.Water:
-                return m_waterChauldronCount;
-            case EBasicIngredient.Ether:
-                return m_etherChauldronCount;
-            default:
-                Debug.LogError("Ingredient type not found");
-                return 0;
-        }
+        //m_cauldronPreviousSize++;
     }
 
     private static void IncrementeIngredientCounter(IngredientData ingredient)
@@ -181,19 +160,19 @@ public class IngredientManager : MonoBehaviour
         switch (ingredient.IngredientType)
         {
             case EBasicIngredient.Fire:
-                m_fireChauldronCount++;
+                m_fireCauldronCount++;
                 break;
             case EBasicIngredient.Air:
-                m_airChauldronCount++;
+                m_airCauldronCount++;
                 break;
             case EBasicIngredient.Earth:
-                m_earthChauldronCount++;
+                m_earthCauldronCount++;
                 break;
             case EBasicIngredient.Water:
-                m_waterChauldronCount++;
+                m_waterCauldronCount++;
                 break;
             case EBasicIngredient.Ether:
-                m_etherChauldronCount++;
+                m_etherCauldronCount++;
                 break;
             default:
                 Debug.LogError("Ingredient type not found");
@@ -201,24 +180,44 @@ public class IngredientManager : MonoBehaviour
         }
     }
 
-    private GameObject GetIngredientPrefab(IngredientData ingredientData)
+    private static uint GetIngredientCount(IngredientData ingredient)
     {
-        switch (ingredientData.IngredientType)
+        switch (ingredient.IngredientType)
         {
             case EBasicIngredient.Fire:
-                return m_fireIngredientPrefab;
+                return m_fireCauldronCount;
             case EBasicIngredient.Air:
-                return m_airIngredientPrefab;
+                return m_airCauldronCount;
             case EBasicIngredient.Earth:
-                return m_earthIngredientPrefab;
+                return m_earthCauldronCount;
             case EBasicIngredient.Water:
-                return m_waterIngredientPrefab;
+                return m_waterCauldronCount;
             case EBasicIngredient.Ether:
-                return m_therIngredientPrefab;
+                return m_etherCauldronCount;
             default:
                 Debug.LogError("Ingredient type not found");
-                return null;
+                return 0;
         }
     }
+
+    //private GameObject GetIngredientData(IngredientData ingredientData)
+    //{
+    //    switch (ingredientData.IngredientType)
+    //    {
+    //        case EBasicIngredient.Fire:
+    //            return m_fireIngredientPrefab;
+    //        case EBasicIngredient.Air:
+    //            return m_airIngredientPrefab;
+    //        case EBasicIngredient.Earth:
+    //            return m_earthIngredientPrefab;
+    //        case EBasicIngredient.Water:
+    //            return m_waterIngredientPrefab;
+    //        case EBasicIngredient.Ether:
+    //            return m_etherIngredientPrefab;
+    //        default:
+    //            Debug.LogError("Ingredient type not found");
+    //            return null;
+    //    }
+    //}
 }
 

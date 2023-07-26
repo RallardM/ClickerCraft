@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemInteraction : MonoBehaviour//, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler // TODO Remi : For my portefolio end of session
+public class ItemInteraction : MonoBehaviour, IPointerClickHandler//, IBeginDragHandler, IDragHandler, IEndDragHandler // TODO Remi : For my portefolio end of session
 {
     private IngredientData m_data;
     [SerializeField] IngredientData m_ingredientData;
@@ -13,10 +13,14 @@ public class ItemInteraction : MonoBehaviour//, IBeginDragHandler, IDragHandler,
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        if (!CompareTag("Element"))
+        Debug.Log("OnPointerClick");
+
+        if (!CompareTag("BaseIngredient"))
         {
             return;
         }
+
+        Debug.Log("Is a base ingredient");
 
         IngredientData clickedIngredient = GetIngredientData();
         IngredientManager.AddIngredient(clickedIngredient);
