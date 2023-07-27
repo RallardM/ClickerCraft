@@ -12,18 +12,20 @@ public class ItemInteraction : MonoBehaviour, IPointerClickHandler//, IBeginDrag
 
     public void OnPointerClick(PointerEventData eventData)
     {
-
-        Debug.Log("OnPointerClick");
-
-        if (!CompareTag("BaseIngredient"))
+        if(CompareTag("CauldonIngredient"))
         {
-            return;
+            Debug.Log("Is an ingredient inside the cauldron");
+            IngredientManager.RemoveIngredient(GetIngredientData());
+            Destroy(gameObject);
         }
 
-        Debug.Log("Is a base ingredient");
+        if (CompareTag("BaseIngredient"))
+        {
+            Debug.Log("Is a base ingredient");
 
-        IngredientData clickedIngredient = GetIngredientData();
-        IngredientManager.AddIngredient(clickedIngredient);
+            IngredientData clickedIngredient = GetIngredientData();
+            IngredientManager.AddIngredient(clickedIngredient);
+        }
     }
 
     // TODO Remi : For my portefolio end of session

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4003634261301271767}
   m_Layer: 5
   m_Name: BasicIngredient
-  m_TagString: Element
+  m_TagString: CauldonIngredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 5269611303702852523}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.66, y: 0.66, z: 0.66}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 2107904835, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55887a640c1f9d146b566ad068f4b555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ingredientData: {fileID: 0}
+  m_ingredientData: {fileID: 11400000, guid: 5009bfcd2bd568440b2851801fa2b1e7, type: 2}
 --- !u!114 &4003634261301271767
 MonoBehaviour:
   m_ObjectHideFlags: 0

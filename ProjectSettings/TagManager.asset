@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - BaseIngredient
+  - CauldonIngredient
   layers:
   - Default
   - TransparentFX

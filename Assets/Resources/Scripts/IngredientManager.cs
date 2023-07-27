@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class IngredientManager : MonoBehaviour
 {
-    static List<IngredientData> m_ingredientsInCauldron = new List<IngredientData>();
-    static List<Transform> m_cauldronSlots = new List<Transform>();
+    [SerializeField] private GameObject m_ingredientPrefab;
+    private static List<IngredientData> m_ingredientsInCauldron = new List<IngredientData>();
+    private static List<Transform> m_cauldronSlots = new List<Transform>();
 
     private static IngredientManager _Instance;
-
-    [SerializeField] private GameObject m_ingredientPrefab;
 
     private static Transform m_firstCauldronSlot;
     private static Transform m_secondCauldronSlot;
@@ -74,25 +73,15 @@ public class IngredientManager : MonoBehaviour
         {
             Transform cauldronSlot = m_cauldronSlots[i];
             IngredientData ingredientData = m_ingredientsInCauldron[i];
-            //GameObject ingredientPrefab = GetIngredientData(ingredientData);
+            m_ingredientPrefab.tag = "CauldonIngredient";
             IngredientUI ingredientUI = Instantiate(m_ingredientPrefab, cauldronSlot).GetComponent<IngredientUI>();
             ingredientUI.SetIngredientData(ingredientData);
         }
     }
 
-    private uint GetNumberOfStackedIngredients()
+    public static void RemoveIngredient(IngredientData ingredientData)
     {
-        return 0;
-    }
-
-    //private void ResetCauldronContent()
-    //{
-
-    //}
-
-    private void UpdateCauldronContent()
-    {
-        
+        m_ingredientsInCauldron.Remove(ingredientData);
     }
 
     public static IngredientManager GetInstance()
@@ -199,25 +188,5 @@ public class IngredientManager : MonoBehaviour
                 return 0;
         }
     }
-
-    //private GameObject GetIngredientData(IngredientData ingredientData)
-    //{
-    //    switch (ingredientData.IngredientType)
-    //    {
-    //        case EBasicIngredient.Fire:
-    //            return m_fireIngredientPrefab;
-    //        case EBasicIngredient.Air:
-    //            return m_airIngredientPrefab;
-    //        case EBasicIngredient.Earth:
-    //            return m_earthIngredientPrefab;
-    //        case EBasicIngredient.Water:
-    //            return m_waterIngredientPrefab;
-    //        case EBasicIngredient.Ether:
-    //            return m_etherIngredientPrefab;
-    //        default:
-    //            Debug.LogError("Ingredient type not found");
-    //            return null;
-    //    }
-    //}
 }
 
