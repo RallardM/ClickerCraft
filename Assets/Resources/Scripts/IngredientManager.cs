@@ -39,13 +39,14 @@ public class IngredientManager : MonoBehaviour
         };
     }
 
-    public enum EBasicIngredient
+    public enum EIngredient
     {
-        Fire,
-        Air,
-        Earth,
-        Water,
-        Ether,
+        Fire,      Air,        Earth,         Water,      Ether,
+        Blaze,     Coal,       Vapor,         Fireburst,  Archea,
+        Magma,     Rock,       Mud,           Dust,       Seed,
+        Steam,     Pond,       Puddle,        Rain,       Algae,
+        Firebolt,  Duststorm,  Thunderstorm,  Tornado,    Fungi,
+        Pyroid,    Golem,      Undine,        Sylph,      Spirit,
         Count
     }
 
@@ -146,21 +147,21 @@ public class IngredientManager : MonoBehaviour
 
     private static void IncrementeIngredientCounter(IngredientData ingredient)
     {
-        switch (ingredient.IngredientType)
+        switch (ingredient.Ingredient)
         {
-            case EBasicIngredient.Fire:
+            case EIngredient.Fire:
                 m_fireCauldronCount++;
                 break;
-            case EBasicIngredient.Air:
+            case EIngredient.Air:
                 m_airCauldronCount++;
                 break;
-            case EBasicIngredient.Earth:
+            case EIngredient.Earth:
                 m_earthCauldronCount++;
                 break;
-            case EBasicIngredient.Water:
+            case EIngredient.Water:
                 m_waterCauldronCount++;
                 break;
-            case EBasicIngredient.Ether:
+            case EIngredient.Ether:
                 m_etherCauldronCount++;
                 break;
             default:
@@ -171,17 +172,17 @@ public class IngredientManager : MonoBehaviour
 
     private static uint GetIngredientCount(IngredientData ingredient)
     {
-        switch (ingredient.IngredientType)
+        switch (ingredient.Ingredient)
         {
-            case EBasicIngredient.Fire:
+            case EIngredient.Fire:
                 return m_fireCauldronCount;
-            case EBasicIngredient.Air:
+            case EIngredient.Air:
                 return m_airCauldronCount;
-            case EBasicIngredient.Earth:
+            case EIngredient.Earth:
                 return m_earthCauldronCount;
-            case EBasicIngredient.Water:
+            case EIngredient.Water:
                 return m_waterCauldronCount;
-            case EBasicIngredient.Ether:
+            case EIngredient.Ether:
                 return m_etherCauldronCount;
             default:
                 Debug.LogError("Ingredient type not found");

@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74cf81c24946f944982a84871ad06ffe, type: 3}
   m_Name: Fire
   m_EditorClassIdentifier: 
-  Name: Fire
   Sprite: {fileID: 2107904835, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
-  MaxQuantity: 99
+  MaxQuantity: 10
   IngredientType: 0
-  Receipe: []
-  isCraftable: 1
+  Receipe: 
+  isCraftable: 0
   isStackable: 1

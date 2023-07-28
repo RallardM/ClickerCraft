@@ -8,7 +8,7 @@ public class IngredientPool : MonoBehaviour
 
     public void CollectIngredient()
     {
-        EBasicIngredient ingredientType = m_ingredientData.IngredientType;
+        EIngredient ingredientType = m_ingredientData.Ingredient;
         //GetInstance().AddIngredient(ingredientType);
     }
 }

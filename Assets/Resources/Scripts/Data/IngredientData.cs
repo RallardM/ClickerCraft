@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using static IngredientManager;
 
@@ -6,12 +8,18 @@ using static IngredientManager;
 
 public class IngredientData : ScriptableObject
 {
-    public string Name;
+    private string Name;
     //public string Description;
     public Sprite Sprite;
     public int MaxQuantity;
-    public EBasicIngredient IngredientType;
-    public List<IngredientData> Receipe; // TODO: add needed ingredient for receipe in list 
+    public EIngredient Ingredient;
+    public List<EIngredient> Receipe = new List<EIngredient>();
     public bool isCraftable;
     public bool isStackable;
+
+    private void Awake()
+    {
+        Name = Ingredient.ToString();
+    }
 }
+

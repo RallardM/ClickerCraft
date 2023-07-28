@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74cf81c24946f944982a84871ad06ffe, type: 3}
-  m_Name: Ether
+  m_Name: Seed
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 2105180315, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
-  MaxQuantity: 10
-  Ingredient: 4
-  Receipe: 
-  isCraftable: 0
+  Sprite: {fileID: 758779368, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
+  MaxQuantity: 5
+  Ingredient: 14
+  Receipe: 0400000002000000
+  isCraftable: 1
   isStackable: 1
