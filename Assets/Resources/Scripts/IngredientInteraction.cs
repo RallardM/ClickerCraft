@@ -3,10 +3,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemInteraction : MonoBehaviour, IPointerClickHandler//, IBeginDragHandler, IDragHandler, IEndDragHandler // TODO Remi : For my portefolio end of session
+public class IngredientInteraction : MonoBehaviour, IPointerClickHandler//, IBeginDragHandler, IDragHandler, IEndDragHandler // TODO Remi : For my portefolio end of session
 {
-    private IngredientData m_data;
     [SerializeField] IngredientData m_ingredientData;
+    public uint m_quantity = 0;
 
     public IngredientData GetIngredientData() { return m_ingredientData; }
 
@@ -21,7 +21,7 @@ public class ItemInteraction : MonoBehaviour, IPointerClickHandler//, IBeginDrag
 
         if (CompareTag("BaseIngredient"))
         {
-            Debug.Log("Is a base ingredient");
+            //Debug.Log("Is a base ingredient");
 
             IngredientData clickedIngredient = GetIngredientData();
             IngredientManager.AddIngredient(clickedIngredient);
