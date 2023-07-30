@@ -1,16 +1,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IngredientManager : MonoBehaviour
 {
     [SerializeField] private GameObject m_ingredientPrefab;
-    private static List<IngredientData> m_ingredientsInCauldron = new List<IngredientData>();
+    private static List<IngredientData> m_ingredientsTransitToCauldron = new List<IngredientData>();
     private static List<Transform> m_cauldronSlots = new List<Transform>();
+    private static List<Transform> m_cauldronSlotsIngredients = new List<Transform>();
 
     public static readonly Array[] m_receipes = new EIngredient[][]
     {
+        m_fireReceipe, m_airReceipe, m_earthReceipe, m_waterReceipe, m_etherReceipe, // To add 0-4 elements for the SetReceipe() function
         m_blazeReceipe, m_coalReceipe, m_vaporReceipe, m_fireburstReceipe, m_archeaReceipe,
         m_magmaReceipe, m_magmaReceipeExtended, m_rockReceipe, m_mudReceipe, m_DustReceipe, m_seedReceipe,
         m_steamRecipe, m_steamReceipeExtended, m_pondReceipe, m_pondReceipeExtended, m_puddleReceipe, m_rainReceipe, m_algeaReceipe,
@@ -31,6 +35,11 @@ public class IngredientManager : MonoBehaviour
     }
 
     // Source : https://youtu.be/Zn4BDIXhy-M
+    private static readonly EIngredient[] m_fireReceipe = new EIngredient[1] { EIngredient.Fire }; // To add 0-4 elements for the SetReceipe() function
+    private static readonly EIngredient[] m_airReceipe = new EIngredient[1] { EIngredient.Air }; // To add 0-4 elements for the SetReceipe() function
+    private static readonly EIngredient[] m_earthReceipe = new EIngredient[1] { EIngredient.Earth }; // To add 0-4 elements for the SetReceipe() function
+    private static readonly EIngredient[] m_waterReceipe = new EIngredient[1] { EIngredient.Water }; // To add 0-4 elements for the SetReceipe() function
+    private static readonly EIngredient[] m_etherReceipe = new EIngredient[1] { EIngredient.Ether }; // To add 0-4 elements for the SetReceipe() function
     private static readonly EIngredient[] m_blazeReceipe = new EIngredient[2] { EIngredient.Fire, EIngredient.Fire };
     private static readonly EIngredient[] m_coalReceipe = new EIngredient[2] { EIngredient.Fire, EIngredient.Earth };
     private static readonly EIngredient[] m_vaporReceipe = new EIngredient[2] { EIngredient.Fire, EIngredient.Water };
@@ -69,46 +78,12 @@ public class IngredientManager : MonoBehaviour
     private static readonly EIngredient[] m_spiritReceipe = new EIngredient[2] { EIngredient.Ether, EIngredient.Ether };
     private static readonly EIngredient[] m_nonCraftable = new EIngredient[1] { EIngredient.Count };
 
-
-
-
     private static IngredientManager _Instance;
 
     private static Transform m_firstCauldronSlot;
     private static Transform m_secondCauldronSlot;
     private static Transform m_thirdCauldronSlot;
     private static Transform m_fourthCauldronSlot;
-
-    //private static uint m_fireCauldronCount = 0;
-    //private static uint m_earthCauldronCount = 0;
-    //private static uint m_waterCauldronCount = 0;
-    //private static uint m_airCauldronCount = 0;
-    //private static uint m_etherCauldronCount = 0;
-    //private static uint m_blazeCauldronCount = 0;
-    //private static uint m_coalCauldronCount = 0;
-    //private static uint m_vaporCauldronCount = 0;
-    //private static uint m_fireburstCauldronCount = 0;
-    //private static uint m_archeaCauldronCount = 0;
-    //private static uint m_magmaCauldronCount = 0;
-    //private static uint m_rockCauldronCount = 0;
-    //private static uint m_mudCauldronCount = 0;
-    //private static uint m_dustCauldronCount = 0;
-    //private static uint m_seedCauldronCount = 0;
-    //private static uint m_steamCauldronCount = 0;
-    //private static uint m_pondCauldronCount = 0;
-    //private static uint m_puddleCauldronCount = 0;
-    //private static uint m_rainCauldronCount = 0;
-    //private static uint m_algeaCauldronCount = 0;
-    //private static uint m_fireboltCauldronCount = 0;
-    //private static uint m_duststormCauldronCount = 0;
-    //private static uint m_thunderstormCauldronCount = 0;
-    //private static uint m_tornadoCauldronCount = 0;
-    //private static uint m_fungiCauldronCount = 0;
-    //private static uint m_pyroidCauldronCount = 0;
-    //private static uint m_golemCauldronCount = 0;
-    //private static uint m_undineCauldronCount = 0;
-    //private static uint m_sylphCauldronCount = 0;
-    //private static uint m_spiritCauldronCount = 0;
 
     private static uint m_cauldronPreviousSize = 0;
 
@@ -131,7 +106,7 @@ public class IngredientManager : MonoBehaviour
     public void Update()
     {
         // Return if the cauldron is empty
-        if (m_ingredientsInCauldron.Count == 0)
+        if (m_ingredientsTransitToCauldron.Count == 0)
         {
             return;
         }
@@ -139,28 +114,37 @@ public class IngredientManager : MonoBehaviour
         // If the cauldron is not empty
 
         // Return if the cauldron size has not changed
-        if (m_cauldronPreviousSize == m_ingredientsInCauldron.Count)
+        if (m_cauldronPreviousSize == m_ingredientsTransitToCauldron.Count)
         {
             return;
         }
 
-        m_cauldronPreviousSize = (uint)m_ingredientsInCauldron.Count;
+        m_cauldronPreviousSize = (uint)m_ingredientsTransitToCauldron.Count;
 
         //Debug.Log("Ingerdients in cauldron : " + m_ingredientsInCauldron.Count);
 
-        for (int i = 0; i < m_ingredientsInCauldron.Count; i++)
+        for (int i = 0; i < m_ingredientsTransitToCauldron.Count; i++)
         {
             Transform cauldronSlot = m_cauldronSlots[i];
-            IngredientData ingredientData = m_ingredientsInCauldron[i];
+
+            if (cauldronSlot.childCount > 0)
+            {
+                continue;
+            }
             m_ingredientPrefab.tag = "CauldonIngredient";
-            IngredientUI ingredientUI = Instantiate(m_ingredientPrefab, cauldronSlot).GetComponent<IngredientUI>();
-            ingredientUI.SetIngredientData(ingredientData);
+            IngredientInteraction ingredientUI = Instantiate(m_ingredientPrefab, cauldronSlot).GetComponent<IngredientInteraction>();
+
+            // Transfere the ingredient data from the clicked ingredient to the new ingredient in the cauldron
+            ingredientUI.IngredientData = m_ingredientsTransitToCauldron[i].GetComponent<IngredientInteraction>().IngredientData;
+
+            // Update the new ingredient UI sprite to the ingredient data sprite from the clicked ingredient
+            ingredientUI.GetComponent<IngredientUI>().Image.sprite = m_ingredientsTransitToCauldron[i].GetComponent<IngredientInteraction>().IngredientData.Sprite;
         }
     }
 
     public static void RemoveIngredient(IngredientData ingredientData)
     {
-        m_ingredientsInCauldron.Remove(ingredientData);
+        m_ingredientsTransitToCauldron.Remove(ingredientData);
     }
 
     public static IngredientManager GetInstance()
@@ -190,7 +174,7 @@ public class IngredientManager : MonoBehaviour
             return;
         }
 
-        if (m_ingredientsInCauldron.Count == 4)
+        if (m_ingredientsTransitToCauldron.Count == 4)
         {
             Debug.Log("Cauldron is full");
             return;
@@ -198,19 +182,19 @@ public class IngredientManager : MonoBehaviour
 
         //Debug.Log("Cauldron is not full");
 
-        if (m_ingredientsInCauldron.Contains(ingredient))
+        if (m_ingredientsTransitToCauldron.Contains(ingredient))
         {
+            // Update the cauldron slot ingredients in case they have changed
+            UpdateCauldronSlotIngredients();
+
             // If the cauldron contains the ingredient
             // verify if it's stackable
-            // and if it's max quantity is not reached
-            uint ingredientCount = GetIngredientCount(ingredient);
+            // and if there is already a stack in the cauldron
 
-            if (ingredient.isStackable && ingredientCount < ingredient.MaxQuantity)
+            if (ingredient.isStackable && IsThereStartedStack(ingredient))
             {
-                m_ingredientsInCauldron.Add(ingredient);
-                IncrementeIngredientCounter(ingredient);
-                Debug.Log("Ingredient added to the cauldron");
-                //m_cauldronPreviousSize++;
+                Debug.Log("Ingredient is stackable and there is already a stack in the cauldron");
+                AddIngredientToStartedStack(ingredient);
             }
             return;
         }
@@ -218,15 +202,25 @@ public class IngredientManager : MonoBehaviour
         // If the ingredient is not in the cauldron
         // add it for the first time
 
-        //Debug.Log("Ingredient added to the cauldron");
-        m_ingredientsInCauldron.Add(ingredient);
-        IncrementeIngredientCounter(ingredient);
-        //m_cauldronPreviousSize++;
+        Debug.Log("Ingredient added to the cauldron");
+        m_ingredientsTransitToCauldron.Add(ingredient);
     }
 
     public static void MixIngredients()
     {
-        //for (int i = 0; i < m_ingredientsInCauldron.Count; i++)
+
+        if(CheckCauldronIngredients())
+        {
+            Debug.Log("Ingredients are valid");
+        }
+        else
+        {
+            Debug.Log("Ingredients are not valid");
+        }
+
+        //uint ingredientCount = GetIngredientsInCauldronCount();
+
+        //for (int i = 0; i < ingredientCount; i++)
         //{
         //    EIngredient ingredient = m_ingredientsInCauldron[i].Ingredient;
         //    foreach (Array array in m_receipes)
@@ -240,174 +234,196 @@ public class IngredientManager : MonoBehaviour
         //        }
         //    }
         //}
-
     }
 
-    private static void IncrementeIngredientCounter(IngredientData ingredient)
+    private static uint GetIngredientsInCauldronCount()
     {
-        //switch (ingredient.Ingredient)
-        //{
-        //    case EIngredient.Fire:
-        //        m_fireCauldronCount++;
-        //        break;
+        uint total = 0;
 
-        //    case EIngredient.Air:
-        //        m_airCauldronCount++;
-        //        break;
+        UpdateCauldronSlotIngredients();
+        foreach (Transform prefabTransform in m_cauldronSlotsIngredients)
+        {
+            //IngredientData ingredientInCauldron = prefabTransform.GetComponent<IngredientInteraction>().GetIngredientData();
 
-        //    case EIngredient.Earth:
-        //        m_earthCauldronCount++;
-        //        break;
+            // If the slot is empty
+            //if (ingredientInCauldron == null)
+            if (prefabTransform == null)
+            {
+                continue;
+            }
 
-        //    case EIngredient.Water:
-        //        m_waterCauldronCount++;
-        //        break;
+            total += prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity;
+        }
 
-        //    case EIngredient.Ether:
-        //        m_etherCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Blaze:
-        //        m_blazeCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Coal:
-        //        m_coalCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Vapor:
-        //        m_vaporCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Fireburst:
-        //        m_fireburstCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Archea:
-        //        m_archeaCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Magma:
-        //        m_magmaCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Rock:
-        //        m_rockCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Mud:
-        //        m_mudCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Dust:
-        //        m_dustCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Seed:
-        //        m_seedCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Steam:
-        //        m_steamCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Pond:
-        //        m_pondCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Puddle:
-        //        m_puddleCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Rain:
-        //        m_rainCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Algae:
-        //        m_algeaCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Firebolt:
-        //        m_fireboltCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Duststorm:
-        //        m_duststormCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Thunderstorm:
-        //        m_thunderstormCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Tornado:
-        //        m_tornadoCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Fungi:
-        //        m_fungiCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Pyroid:
-        //        m_pyroidCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Golem:
-        //        m_golemCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Undine:
-        //        m_undineCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Sylph:
-        //        m_sylphCauldronCount++;
-        //        break;
-
-        //    case EIngredient.Spirit:
-        //        m_spiritCauldronCount++;
-        //        break;
-
-        //    case EIngredient.MagmaExtended:
-        //    case EIngredient.SteamExtended:
-        //    case EIngredient.PondExtended:
-        //    case EIngredient.FireboltExtended:
-        //    case EIngredient.DuststormExtended:
-        //    case EIngredient.ThunderstormExtended:
-        //    case EIngredient.PyroidExtended:
-        //    case EIngredient.GolemExtended:
-        //    case EIngredient.UndineExtended:
-        //    case EIngredient.SylphExtended:
-        //    default:
-        //        Debug.LogError("Ingredient type incorrect or not found.");
-        //        break;  
-        //}
+        return total;
     }
 
-    private static uint GetIngredientCount(IngredientData ingredient)
+    private static bool CheckCauldronIngredients()
     {
-        //switch (ingredient.Ingredient)
-        //{
-        //    case EIngredient.Fire:
-        //        return m_fireCauldronCount;
+        foreach (EIngredient[] recipe in m_receipes)
+        {
+            if (IsCauldronMatchingRecipe(recipe))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        //    case EIngredient.Air:
-        //        return m_airCauldronCount;
+    private static bool IsCauldronMatchingRecipe(EIngredient[] recipe)
+    {
+        // Create a dictionary to store the ingredient counts in the cauldron
+        Dictionary<EIngredient, uint> cauldronIngredientCounts = new Dictionary<EIngredient, uint>();
 
-        //    case EIngredient.Earth:
-        //        return m_earthCauldronCount;
+        // Update the cauldron slot ingredients in case they have changed
+        UpdateCauldronSlotIngredients();
 
-        //    case EIngredient.Water:
-        //        return m_waterCauldronCount;
+        // Populate the dictionary with the ingredient counts from the cauldronIngredients list
+        foreach (Transform ingredientTransorm in m_cauldronSlotsIngredients)
+        {
+            // If not in the dictionary, put it to 0
+            if (!cauldronIngredientCounts.ContainsKey(ingredientTransorm.GetComponent<IngredientData>().Ingredient))
+            {
+                cauldronIngredientCounts[ingredientTransorm.GetComponent<IngredientData>().Ingredient] = 0;
+            }
 
-        //    case EIngredient.Ether:
-        //        return m_etherCauldronCount;
+            // Add the quantity of the ingredient to the dictionary
+            cauldronIngredientCounts[ingredientTransorm.GetComponent<IngredientData>().Ingredient] += ingredientTransorm.GetComponent<IngredientInteraction>().CurrentQuantity;
+        }
 
+        // Iterate through the recipe ingredients and try to find a match in the cauldronIngredientCounts dictionary
+        foreach (EIngredient ingredient in recipe)
+        {
+            if (!cauldronIngredientCounts.ContainsKey(ingredient) || cauldronIngredientCounts[ingredient] <= 0)
+            {
+                return false;
+            }
+            cauldronIngredientCounts[ingredient]--;
+        }
 
-        //    default:
-        //        Debug.LogError("Ingredient type not found");
-        //        return 0;
-        //}
-        return 0;
+        return true;
+    }
+
+    //private bool IsCauldronMatchingRecipe(EIngredient[] recipe)
+    //{
+    //    if (GetIngredientsInCauldronCount() != recipe.Length)
+    //    {
+    //        return false;
+    //    }
+
+    //    // Source : https://discussions.unity.com/t/copying-one-list-to-another-list/99515
+    //    // Create a copy of the cauldron ingredients list
+    //    UpdateCauldronSlotIngredients();
+    //    List<Transform> cauldronCopy = new List<Transform>(m_cauldronSlotsIngredients);
+
+    //    // Iterate through the recipe ingredients and try to find a match in the cauldron copy
+    //    foreach (EIngredient ingredient in recipe)
+    //    {
+    //        bool found = false;
+    //        for (int i = 0; i < GetIngredientsInCauldronCount(); i++)
+    //        {
+    //            if (cauldronCopy[i].GetComponent<IngredientData>().Ingredient == ingredient)
+    //            {
+    //                // Mark the ingredient as found and remove it from the cauldron copy
+    //                found = true;
+    //                cauldronCopy.RemoveAt(i);
+    //                break;
+    //            }
+    //        }
+
+    //        if (!found)
+    //        {
+    //            return false;
+    //        }
+    //    }
+
+    //    return true;
+    //}
+
+    private static bool IsThereStartedStack(IngredientData addedIngredient)
+    {
+        foreach (Transform prefabTransform in m_cauldronSlotsIngredients)
+        {
+            // If the slot is empty
+            if (prefabTransform == null)
+            {
+                continue;
+            }
+
+            IngredientData ingredientInCauldron = prefabTransform.GetComponent<IngredientInteraction>().IngredientData;
+
+            // If the added ingredient is not in the the same as the ingredient in the cauldron
+            if (ingredientInCauldron.Ingredient != addedIngredient.Ingredient)
+            {
+                continue;
+            }
+
+            // If the ingredient is the same but has reached the max quantity
+            if (prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity == ingredientInCauldron.MaxQuantity)
+            {
+                continue;
+            }
+
+            // else return true if the ingredient is the same and has not reached the max quantity
+            else
+            {
+                return true;
+                    //prefabTransform.GetComponent<IngredientInteraction>().m_quantity;
+            }
+        }
+        return false;
+    }
+
+    private static void AddIngredientToStartedStack(IngredientData addedIngredient)
+    {
+        foreach (Transform prefabTransform in m_cauldronSlotsIngredients)
+        {
+            // If the slot is empty
+            if (prefabTransform == null)
+            {
+                continue;
+            }
+
+            IngredientData ingredientInCauldron = prefabTransform.GetComponent<IngredientInteraction>().IngredientData;
+
+            // If the added ingredient is not in the the same as the ingredient in the cauldron
+            if (ingredientInCauldron.Ingredient != addedIngredient.Ingredient)
+            {
+                continue;
+            }
+
+            // If the ingredient is the same but as reached the max quantity
+            if (prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity == ingredientInCauldron.MaxQuantity)
+            {
+                continue;
+            }
+
+            // else increment and return if the ingredient is the same and has not reached the max quantity
+            else
+            {
+                prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity++;
+                return;
+            }
+        }
+    }
+
+    private static void UpdateCauldronSlotIngredients()
+    {
+        m_cauldronSlotsIngredients.Clear();
+
+        foreach (Transform prefabTransform in m_cauldronSlots)
+        {
+            if (prefabTransform.childCount == 0)
+            {
+                continue;
+            }
+
+            Transform ingredient = prefabTransform.GetChild(0);
+            if (ingredient != null)
+            {
+                m_cauldronSlotsIngredients.Add(ingredient.GetComponent<Transform>());
+            }
+        }
     }
 }
 

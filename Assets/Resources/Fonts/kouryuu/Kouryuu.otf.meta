@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 76fafc0d33e9c6d4891a45aca4d2f09d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Kouryuu
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 25947d42e5d91474499878b6c4ea137c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

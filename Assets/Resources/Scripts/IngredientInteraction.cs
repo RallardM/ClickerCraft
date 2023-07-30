@@ -1,21 +1,23 @@
 // Source : https://www.youtube.com/watch?v=kWRyZ3hb1Vc
-
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class IngredientInteraction : MonoBehaviour, IPointerClickHandler//, IBeginDragHandler, IDragHandler, IEndDragHandler // TODO Remi : For my portefolio end of session
 {
     [SerializeField] IngredientData m_ingredientData;
-    public uint m_quantity = 0;
+    private uint m_currentQuantity = 1;
 
-    public IngredientData GetIngredientData() { return m_ingredientData; }
+    public uint CurrentQuantity { get { return m_currentQuantity; } set { m_currentQuantity = value; } }
+
+    public IngredientData IngredientData { get { return m_ingredientData; } set { m_ingredientData = value; } }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if(CompareTag("CauldonIngredient"))
         {
-            Debug.Log("Is an ingredient inside the cauldron");
-            IngredientManager.RemoveIngredient(GetIngredientData());
+            //Debug.Log("Is an ingredient inside the cauldron");
+            IngredientManager.RemoveIngredient(IngredientData);
             Destroy(gameObject);
         }
 
@@ -23,7 +25,7 @@ public class IngredientInteraction : MonoBehaviour, IPointerClickHandler//, IBeg
         {
             //Debug.Log("Is a base ingredient");
 
-            IngredientData clickedIngredient = GetIngredientData();
+            IngredientData clickedIngredient = IngredientData;
             IngredientManager.AddIngredient(clickedIngredient);
         }
     }
