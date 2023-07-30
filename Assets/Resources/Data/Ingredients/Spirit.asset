@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sprite: {fileID: 2089570409, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
   MaxQuantity: 1
-  Ingredient: 29
-  Receipe: 0400000004000000
+  Ingredient: 40
   isCraftable: 1
   isStackable: 0

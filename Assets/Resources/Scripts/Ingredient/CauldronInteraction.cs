@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CauldronInteraction : MonoBehaviour, IPointerClickHandler
+public class CauldronInteraction : IngredientManager, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {

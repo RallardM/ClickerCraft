@@ -147,9 +147,9 @@ GameObject:
   - component: {fileID: 5269611303702851671}
   - component: {fileID: 5269611303702851670}
   - component: {fileID: 4003634261301271767}
-  - component: {fileID: 4305582564589002160}
+  - component: {fileID: 4549098439526079264}
   m_Layer: 5
-  m_Name: BasicIngredient
+  m_Name: CauldronIngredient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4958bd1f3186db448b00694b5943d0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4305582564589002160
+--- !u!114 &4549098439526079264
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,7 +235,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5269611303702852523}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55887a640c1f9d146b566ad068f4b555, type: 3}
+  m_Script: {fileID: 11500000, guid: 727e108c1faf80d4cae54ab60a46bfcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ingredientData: {fileID: 0}

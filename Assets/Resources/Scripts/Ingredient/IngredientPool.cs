@@ -2,7 +2,7 @@
 using UnityEngine;
 using static IngredientManager;
 
-public class IngredientPool : MonoBehaviour
+public class IngredientPool : IngredientManager
 {
     [SerializeField] private IngredientData m_ingredientData;
 

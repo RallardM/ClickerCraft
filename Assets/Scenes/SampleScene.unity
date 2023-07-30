@@ -756,6 +756,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 336190861}
     m_Modifications:
+    - target: {fileID: 4305582564589002160, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 639f7ad4650cf364fa07c4eed514b0ed, type: 2}
     - target: {fileID: 5269611303702851670, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -870,7 +874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_TagString
-      value: BaseIngredient
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6305880925434244545, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -1391,6 +1395,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1912679857}
     m_Modifications:
+    - target: {fileID: 4305582564589002160, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 7775538707b840148b8efbf9745484bc, type: 2}
     - target: {fileID: 5269611303702851670, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1505,7 +1513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_TagString
-      value: BaseIngredient
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6305880925434244545, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -2140,6 +2148,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1550004818}
     m_Modifications:
+    - target: {fileID: 4305582564589002160, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5009bfcd2bd568440b2851801fa2b1e7, type: 2}
+    - target: {fileID: 5269611303702851670, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2107904835, guid: da7564f93fb58b245b5ad7a89d94e945, type: 3}
     - target: {fileID: 5269611303702852520, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2224,13 +2240,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5269611303702852521, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5009bfcd2bd568440b2851801fa2b1e7, type: 2}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Name
       value: FireIngredient
       objectReference: {fileID: 0}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_TagString
-      value: BaseIngredient
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6305880925434244545, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -2432,6 +2452,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1648649201}
     m_Modifications:
+    - target: {fileID: 4305582564589002160, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 996e3f63d78713b45887e238a5839b26, type: 2}
     - target: {fileID: 5269611303702851670, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2546,7 +2570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_TagString
-      value: BaseIngredient
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6305880925434244545, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -2563,8 +2587,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1126038566}
+  - component: {fileID: 1126038567}
   m_Layer: 0
-  m_Name: UI
+  m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2588,6 +2613,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1126038567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126038565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3880b320ce4d5d94499c3f53f51229da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1164239450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3276,6 +3313,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 323180384}
     m_Modifications:
+    - target: {fileID: 4305582564589002160, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
+      propertyPath: m_ingredientData
+      value: 
+      objectReference: {fileID: 11400000, guid: 343f962c3a866204eb317efe6a381037, type: 2}
     - target: {fileID: 5269611303702851670, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3390,7 +3431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_TagString
-      value: BaseIngredient
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6305880925434244545, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -4651,7 +4692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264e24006028bdb4889c31df45821a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ingredientPrefab: {fileID: 5269611303702852523, guid: b6cd3f81f1b45954097eabbdf90d875f, type: 3}
 --- !u!224 &1912679857 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7488704487427452381, guid: 7797ceef67facb54b991c1d13bab0c60, type: 3}
