@@ -1,14 +1,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class IngredientManager : MonoBehaviour
 {
-    private GameObject m_cauldronIngredientPrefab;
     private static List<IngredientData> m_ingredientsTransitToCauldron = new List<IngredientData>();
-    private static List<Transform> m_cauldronSlots = new List<Transform>();
+    private static List<GameObject> m_cauldronSlots = new List<GameObject>();
     private static List<Transform> m_cauldronSlotsIngredients = new List<Transform>();
 
     public static readonly Array[] m_receipes = new EIngredient[][]
@@ -79,21 +80,40 @@ public class IngredientManager : MonoBehaviour
 
     private static IngredientManager _Instance;
 
-    private static Transform m_firstCauldronSlot;
-    private static Transform m_secondCauldronSlot;
-    private static Transform m_thirdCauldronSlot;
-    private static Transform m_fourthCauldronSlot;
+    private GameObject m_firstCauldronSlot;
+    private GameObject m_secondCauldronSlot;
+    private GameObject m_thirdCauldronSlot;
+    private GameObject m_fourthCauldronSlot;
+
+    private GameObject m_cauldronIngredientPrefab;
+
+    private static IngredientData m_lastClickedIngredient;
+
+    private string m_firstCauldronSlotPath = "Canvas/CauldronSlots/TopInventorySlot";
+    private string m_secondCauldronSlotPath = "Canvas/CauldronSlots/LeftInventorySlot";
+    private string m_thirdCauldronSlotPath = "Canvas/CauldronSlots/RightInventorySlot";
+    private string m_fourthCauldronSlotPath = "Canvas/CauldronSlots/BottomInventorySlot";
+
+    private string m_cauldronIngredientPath = "Prefabs/CauldronIngredient";
 
     private static uint m_cauldronPreviousSize = 0;
 
+    private IngredientData LastClickedIngredient { get => m_lastClickedIngredient; set => m_lastClickedIngredient = value; }
+
     private void Awake()
     {
-        m_firstCauldronSlot = transform.Find("Canvas/CauldronSlots/TopInventorySlot");
-        m_secondCauldronSlot = transform.Find("Canvas/CauldronSlots/LeftInventorySlot");
-        m_thirdCauldronSlot = transform.Find("Canvas/CauldronSlots/RightInventorySlot");
-        m_fourthCauldronSlot = transform.Find("Canvas/CauldronSlots/BottomInventorySlot");
+        m_firstCauldronSlot = GameObject.Find(m_firstCauldronSlotPath);
+        m_secondCauldronSlot = GameObject.Find(m_secondCauldronSlotPath);
+        m_thirdCauldronSlot = GameObject.Find(m_thirdCauldronSlotPath);
+        m_fourthCauldronSlot = GameObject.Find(m_fourthCauldronSlotPath);
 
-        m_cauldronSlots = new List<Transform>
+        if (m_firstCauldronSlot == null || m_secondCauldronSlot == null ||
+            m_thirdCauldronSlot == null || m_fourthCauldronSlot == null)
+        {
+            Debug.LogError("One or more Cauldron Slots not found.");
+        }
+
+        m_cauldronSlots = new List<GameObject>
         {
             m_firstCauldronSlot,
             m_secondCauldronSlot,
@@ -101,7 +121,12 @@ public class IngredientManager : MonoBehaviour
             m_fourthCauldronSlot
         };
 
-        m_cauldronIngredientPrefab = Resources.Load("Assets/Resources/Prefabs/CauldronIngredient.prefab") as GameObject;
+        m_cauldronIngredientPrefab = Resources.Load(m_cauldronIngredientPath) as GameObject;
+
+        if (m_cauldronIngredientPrefab == null)
+        {
+            Debug.LogError("Cauldron Ingredient Prefab not found.");
+        }
     }
 
     public void Update()
@@ -122,27 +147,45 @@ public class IngredientManager : MonoBehaviour
 
         m_cauldronPreviousSize = (uint)m_ingredientsTransitToCauldron.Count;
 
-        //Debug.Log("Ingerdients in cauldron : " + m_ingredientsInCauldron.Count);
+        Debug.Log("Ingerdients in cauldron : " + m_cauldronPreviousSize);
 
         for (int i = 0; i < m_ingredientsTransitToCauldron.Count; i++)
         {
-            Transform cauldronSlot = m_cauldronSlots[i];
+            GameObject cauldronSlot = m_cauldronSlots[i];
 
             if (cauldronSlot == null)
             {
+                Debug.LogError("Cauldron slot is null");
                 continue;
             }
 
-            if (cauldronSlot.childCount > 0)
+            if (cauldronSlot.transform.childCount > 0)
             {
+                Debug.Log("Cauldron slot is not empty");
                 continue;
             }
 
-            Transform ingredientPrefabTransform = Instantiate(m_cauldronIngredientPrefab, cauldronSlot).GetComponent<Transform>();
+            Debug.Log("Creating ingredient in cauldron");
+            Transform ingredientPrefabTransform = Instantiate(m_cauldronIngredientPrefab, cauldronSlot.transform).GetComponent<Transform>();
 
-            //// Transfere the ingredient data from the clicked ingredient to the new ingredient in the cauldron
-            //BasicIngredientInteraction ingredientInteraction = ingredientPrefabTransform.GetComponent<BasicIngredientInteraction>();
-            //ingredientInteraction.IngredientData = m_ingredientsTransitToCauldron[i].GetComponent<BasicIngredientInteraction>().IngredientData;
+            // Transfere the ingredient data from the clicked ingredient to the new ingredient in the cauldron
+
+            if (ingredientPrefabTransform == null)
+            {
+                Debug.LogError("Ingredient prefab transform is null");
+                continue;
+            }
+
+            CauldronIngredientInteraction ingredientInteraction = ingredientPrefabTransform.GetComponent<CauldronIngredientInteraction>();
+
+            if (ingredientInteraction == null)
+            {
+                Debug.LogError("Ingredient interaction is null");
+                continue;
+            }
+            //Transform LastClickedIngredientTransform = LastClickedIngredient.GetComponent<Transform>();
+            ingredientInteraction.IngredientData = LastClickedIngredient;
+            LastClickedIngredient = null;
         }
     }
 
@@ -173,14 +216,6 @@ public class IngredientManager : MonoBehaviour
             return;
         }
 
-        if (m_ingredientsTransitToCauldron.Count == 4)
-        {
-            Debug.Log("Cauldron is full");
-            return;
-        }
-
-        //Debug.Log("Cauldron is not full");
-
         if (m_ingredientsTransitToCauldron.Contains(ingredient))
         {
             // Update the cauldron slot ingredients in case they have changed
@@ -198,10 +233,18 @@ public class IngredientManager : MonoBehaviour
             return;
         }
 
+        if (m_ingredientsTransitToCauldron.Count == 4)
+        {
+            Debug.Log("Cauldron is full");
+            return;
+        }
+
+
         // If the ingredient is not in the cauldron
         // add it for the first time
 
         Debug.Log("Ingredient added to the cauldron");
+        m_lastClickedIngredient = ingredient;
         m_ingredientsTransitToCauldron.Add(ingredient);
     }
 
@@ -354,7 +397,12 @@ public class IngredientManager : MonoBehaviour
                 continue;
             }
 
-            IngredientData ingredientInCauldron = prefabTransform.GetComponent<BasicIngredientInteraction>().IngredientData;
+            if (prefabTransform.GetComponent<CauldronIngredientInteraction>().IngredientData == null)
+            {
+                Debug.Log("Ingredient data is null");
+            }
+
+            IngredientData ingredientInCauldron = prefabTransform.GetComponent<CauldronIngredientInteraction>().IngredientData;
 
             // If the added ingredient is not in the the same as the ingredient in the cauldron
             if (ingredientInCauldron.Ingredient != addedIngredient.Ingredient)
@@ -388,7 +436,7 @@ public class IngredientManager : MonoBehaviour
                 continue;
             }
 
-            IngredientData ingredientInCauldron = prefabTransform.GetComponent<BasicIngredientInteraction>().IngredientData;
+            IngredientData ingredientInCauldron = prefabTransform.GetComponent<CauldronIngredientInteraction>().IngredientData;
 
             // If the added ingredient is not in the the same as the ingredient in the cauldron
             if (ingredientInCauldron.Ingredient != addedIngredient.Ingredient)
@@ -415,14 +463,14 @@ public class IngredientManager : MonoBehaviour
     {
         m_cauldronSlotsIngredients.Clear();
 
-        foreach (Transform prefabTransform in m_cauldronSlots)
+        foreach (GameObject prefabTransform in m_cauldronSlots)
         {
-            if (prefabTransform.childCount == 0)
+            if (prefabTransform.transform.childCount == 0)
             {
                 continue;
             }
 
-            Transform ingredient = prefabTransform.GetChild(0);
+            Transform ingredient = prefabTransform.transform.GetChild(0);
             if (ingredient != null)
             {
                 m_cauldronSlotsIngredients.Add(ingredient.GetComponent<Transform>());
