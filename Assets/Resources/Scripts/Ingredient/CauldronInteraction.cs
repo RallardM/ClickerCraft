@@ -6,7 +6,7 @@ public class CauldronInteraction : IngredientManager, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnCauldronMix :");
+        Debug.Log("OnCauldronMix");
         IngredientManager.MixIngredients();
     }
 }

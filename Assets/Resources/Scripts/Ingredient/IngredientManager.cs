@@ -96,7 +96,7 @@ public class IngredientManager : MonoBehaviour
 
     private string m_cauldronIngredientPath = "Prefabs/CauldronIngredient";
 
-    private static uint m_cauldronPreviousSize = 0;
+    protected static uint m_cauldronPreviousSize = 0;
 
     private IngredientData LastClickedIngredient { get => m_lastClickedIngredient; set => m_lastClickedIngredient = value; }
 
@@ -142,12 +142,13 @@ public class IngredientManager : MonoBehaviour
         // Return if the cauldron size has not changed
         if (m_cauldronPreviousSize == m_ingredientsTransitToCauldron.Count)
         {
+            //Debug.Log("Cauldron size has not changed");
             return;
         }
 
         m_cauldronPreviousSize = (uint)m_ingredientsTransitToCauldron.Count;
 
-        Debug.Log("Ingerdients in cauldron : " + m_cauldronPreviousSize);
+        //Debug.Log("Ingerdients in cauldron : " + m_cauldronPreviousSize);
 
         for (int i = 0; i < m_ingredientsTransitToCauldron.Count; i++)
         {
@@ -161,11 +162,11 @@ public class IngredientManager : MonoBehaviour
 
             if (cauldronSlot.transform.childCount > 0)
             {
-                Debug.Log("Cauldron slot is not empty");
+                //Debug.Log("Cauldron slot is not empty");
                 continue;
             }
 
-            Debug.Log("Creating ingredient in cauldron");
+            //Debug.Log("Creating ingredient in cauldron");
             Transform ingredientPrefabTransform = Instantiate(m_cauldronIngredientPrefab, cauldronSlot.transform).GetComponent<Transform>();
 
             // Transfere the ingredient data from the clicked ingredient to the new ingredient in the cauldron
@@ -227,7 +228,7 @@ public class IngredientManager : MonoBehaviour
 
             if (ingredient.isStackable && IsThereStartedStack(ingredient))
             {
-                Debug.Log("Ingredient is stackable and there is already a stack in the cauldron");
+                //Debug.Log("Ingredient is stackable and there is already a stack in the cauldron");
                 AddIngredientToStartedStack(ingredient);
             }
             return;
@@ -243,9 +244,10 @@ public class IngredientManager : MonoBehaviour
         // If the ingredient is not in the cauldron
         // add it for the first time
 
-        Debug.Log("Ingredient added to the cauldron");
+        //Debug.Log("Ingredient in cauldron before add :" + m_ingredientsTransitToCauldron.Count);
         m_lastClickedIngredient = ingredient;
         m_ingredientsTransitToCauldron.Add(ingredient);
+        //Debug.Log("Ingredient in cauldron after add :" + m_ingredientsTransitToCauldron.Count);
     }
 
     public static void RemoveIngredient(IngredientData ingredientData)
@@ -453,6 +455,7 @@ public class IngredientManager : MonoBehaviour
             // else increment and return if the ingredient is the same and has not reached the max quantity
             else
             {
+                //Debug.Log("Incrementing ingredient");
                 prefabTransform.GetComponent<CauldronIngredientInteraction>().CurrentQuantity++;
                 return;
             }
