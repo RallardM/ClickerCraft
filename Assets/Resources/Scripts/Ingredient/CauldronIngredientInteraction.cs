@@ -23,7 +23,7 @@ public class CauldronIngredientInteraction : IngredientManager, IPointerClickHan
         }
 
         //Debug.Log("Remove the ingredient from the cauldron");
-        IngredientManager.RemoveIngredient(IngredientData);
+        IngredientPool.RemoveIngredient(IngredientData);
         Destroy(gameObject);
         m_cauldronPreviousSize--;
     }

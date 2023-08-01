@@ -8,9 +8,7 @@ using UnityEngine;
 
 public class IngredientManager : MonoBehaviour
 {
-    private static List<IngredientData> m_ingredientsTransitToCauldron = new List<IngredientData>();
-    //private static List<GameObject> m_cauldronSlots = new List<GameObject>();
-    //private static List<GameObject> m_coagulaSlots = new List<GameObject>();
+    
     private static List<Transform> m_cauldronSlotsIngredients = new List<Transform>();
 
     public static EIngredient[][] m_receipes;
@@ -128,7 +126,7 @@ public class IngredientManager : MonoBehaviour
 
     protected static uint m_cauldronPreviousSize = 0;
 
-    private IngredientData LastClickedIngredient { get => m_lastClickedIngredient; set => m_lastClickedIngredient = value; }
+    protected static IngredientData LastClickedIngredient { get => m_lastClickedIngredient; set => m_lastClickedIngredient = value; }
 
     private void Awake()
     {
@@ -200,7 +198,7 @@ public class IngredientManager : MonoBehaviour
     public void Update()
     {
         // Return if the cauldron is empty
-        if (m_ingredientsTransitToCauldron.Count == 0)
+        if (IngredientPool.IngredientsTransitToCauldron.Count == 0)
         {
             return;
         }
@@ -208,13 +206,13 @@ public class IngredientManager : MonoBehaviour
         // If the cauldron is not empty
 
         // Return if the cauldron size has not changed
-        if (m_cauldronPreviousSize == m_ingredientsTransitToCauldron.Count)
+        if (m_cauldronPreviousSize == IngredientPool.IngredientsTransitToCauldron.Count)
         {
             //Debug.Log("Cauldron size has not changed");
             return;
         }
 
-        m_cauldronPreviousSize = (uint)m_ingredientsTransitToCauldron.Count;
+        m_cauldronPreviousSize = (uint)IngredientPool.IngredientsTransitToCauldron.Count;
 
         //Debug.Log("Ingerdients in cauldron : " + m_cauldronPreviousSize);
 
@@ -224,7 +222,7 @@ public class IngredientManager : MonoBehaviour
 
     private void UpdateCauldronContent()
     {
-        for (int i = 0; i < m_ingredientsTransitToCauldron.Count; i++)
+        for (int i = 0; i < IngredientPool.IngredientsTransitToCauldron.Count; i++)
         {
             if (m_cauldronSlots[i] == null)
             {
@@ -281,52 +279,6 @@ public IngredientManager()
         Destroy(this);
         return;
     }
-}
-
-public static void AddIngredient(IngredientData ingredient)
-{
-    if (ingredient == null)
-    {
-        Debug.LogError("Ingredient is null");
-        return;
-    }
-
-    if (m_ingredientsTransitToCauldron.Contains(ingredient))
-    {
-        // Update the cauldron slot ingredients in case they have changed
-        UpdateCauldronSlotIngredients();
-
-        // If the cauldron contains the ingredient
-        // verify if it's stackable
-        // and if there is already a stack in the cauldron
-
-        if (ingredient.isStackable && IsThereStartedStack(ingredient))
-        {
-            //Debug.Log("Ingredient is stackable and there is already a stack in the cauldron");
-            AddIngredientToStartedStack(ingredient);
-        }
-        return;
-    }
-
-    if (m_ingredientsTransitToCauldron.Count == 4)
-    {
-        Debug.Log("Cauldron is full");
-        return;
-    }
-
-
-    // If the ingredient is not in the cauldron
-    // add it for the first time
-
-    //Debug.Log("Ingredient in cauldron before add :" + m_ingredientsTransitToCauldron.Count);
-    m_lastClickedIngredient = ingredient;
-    m_ingredientsTransitToCauldron.Add(ingredient);
-    //Debug.Log("Ingredient in cauldron after add :" + m_ingredientsTransitToCauldron.Count);
-}
-
-public static void RemoveIngredient(IngredientData ingredientData)
-{
-    m_ingredientsTransitToCauldron.Remove(ingredientData);
 }
 
 protected static void CraftNewIngredient(EIngredient resultingIngredient)
@@ -510,7 +462,7 @@ private static EIngredient GetResultingIngredient(uint indexOfReceipe)
     }
 }
 
-private static bool IsThereStartedStack(IngredientData addedIngredient)
+protected static bool IsThereStartedStack(IngredientData addedIngredient)
 {
     foreach (Transform prefabTransform in m_cauldronSlotsIngredients)
     {
@@ -549,7 +501,7 @@ private static bool IsThereStartedStack(IngredientData addedIngredient)
     return false;
 }
 
-private static void AddIngredientToStartedStack(IngredientData addedIngredient)
+protected static void AddIngredientToStartedStack(IngredientData addedIngredient)
 {
     foreach (Transform prefabTransform in m_cauldronSlotsIngredients)
     {
