@@ -13,7 +13,7 @@ public class BasicIngredientInteraction : IngredientManager, IPointerClickHandle
         //Debug.Log("Is a base ingredient");
 
         IngredientData clickedIngredient = IngredientData;
-        IngredientManager.AddIngredient(clickedIngredient);
+        AddIngredient(clickedIngredient);
     }
 
     // TODO Remi : For my portefolio end of session

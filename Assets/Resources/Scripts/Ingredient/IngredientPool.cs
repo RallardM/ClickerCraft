@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using static IngredientManager;
 
 public class IngredientPool : IngredientManager
 {

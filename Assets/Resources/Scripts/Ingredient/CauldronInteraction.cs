@@ -6,7 +6,16 @@ public class CauldronInteraction : IngredientManager, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnCauldronMix");
-        IngredientManager.MixIngredients();
+        // Update the cauldron slot ingredients in case they have changed
+        UpdateCauldronSlotIngredients();
+
+        if (!CheckCauldronIngredients())
+        {
+            Debug.Log("Ingredients are not valid");
+            return;
+        }
+
+        EIngredient resultingIngredient = GetResultingIngredient();
+        CraftNewIngredient(resultingIngredient);
     }
 }
