@@ -66,7 +66,6 @@ public class IngredientUI : UIManager
         // If the image has no sprite but the , load the corresponding sprite
         if (m_ingredientInteraction != null && m_image.sprite == null)
         {
-            var test = m_ingredientInteraction;
             m_image.sprite = m_ingredientInteraction.IngredientData.Sprite;
         }
     }
