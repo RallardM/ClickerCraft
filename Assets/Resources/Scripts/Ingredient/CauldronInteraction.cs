@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,7 +8,7 @@ public class CauldronInteraction : IngredientManager, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         // Update the cauldron slot ingredients in case they have changed
-        UpdateCauldronSlotIngredients();
+        IngredientPool.UpdateSlotIngredients(IngredientPool.CauldronIngredientTransforms, UIManager.EUiSlotContainer.Cauldron);
 
         if (!CheckCauldronIngredients())
         {
@@ -16,6 +17,7 @@ public class CauldronInteraction : IngredientManager, IPointerClickHandler
         }
 
         EIngredient resultingIngredient = GetResultingIngredient();
-        CraftNewIngredient(resultingIngredient);
+        //IngredientPool.CraftNewIngredient(resultingIngredient);
+        IngredientPool.AddIngredient(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula);
     }
 }

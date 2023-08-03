@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 4003634261301271767}
   - component: {fileID: 4549098439526079264}
   m_Layer: 5
-  m_Name: CauldronIngredient
+  m_Name: Ingredient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

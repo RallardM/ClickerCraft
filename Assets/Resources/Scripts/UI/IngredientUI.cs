@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class IngredientUI : UIManager
 {
-    CauldronIngredientInteraction m_ingredientInteraction;
+    IngredientInteraction m_ingredientInteraction;
 
     private Image m_image;
     //private Transform m_quantityTextTransform;
@@ -27,14 +27,14 @@ public class IngredientUI : UIManager
         //m_ingredientData = GetComponent<ItemInteraction>().GetIngredientData();
         //Sprite spriteFromImage = GetComponent<Image>().sprite;
         //m_ingredientData.Sprite = spriteFromImage;
-        m_ingredientInteraction = GetComponent<CauldronIngredientInteraction>();
+        m_ingredientInteraction = GetComponent<IngredientInteraction>();
         m_image = GetComponent<Image>();
         //m_quantityTextTransform = transform.Find("QuantityText");
         m_quantityText = transform.Find("QuantityText").GetComponent<TextMeshProUGUI>();
 
-        if (GetComponent<CauldronIngredientInteraction>() != null)
+        if (GetComponent<IngredientInteraction>() != null)
         {
-            m_currentQuantity = GetComponent<CauldronIngredientInteraction>().CurrentQuantity;
+            m_currentQuantity = GetComponent<IngredientInteraction>().CurrentQuantity;
         }
         else
         {
@@ -51,7 +51,7 @@ public class IngredientUI : UIManager
     private void Update()
     {
         // Return if the ingredient is not in the cauldron (it is therfore a static basic ingredient)
-        if (GetComponent<CauldronIngredientInteraction>() == null)
+        if (GetComponent<IngredientInteraction>() == null)
         {
             return;
         }
@@ -86,9 +86,9 @@ public class IngredientUI : UIManager
     private void UpdateQuantityText()
     {
         // If the quantity of the ingredient has changed, update the quantity text
-        if (m_currentQuantity != GetComponent<CauldronIngredientInteraction>().CurrentQuantity)
+        if (m_currentQuantity != GetComponent<IngredientInteraction>().CurrentQuantity)
         {
-            m_currentQuantity = GetComponent<CauldronIngredientInteraction>().CurrentQuantity;
+            m_currentQuantity = GetComponent<IngredientInteraction>().CurrentQuantity;
             m_quantityText.text = m_currentQuantity.ToString();
         }
     }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BasicIngredientInteraction : IngredientManager, IPointerClickHandler//, IBeginDragHandler, IDragHandler, IEndDragHandler // TODO Remi : For my portefolio end of session
+public class BasicIngredientInteraction : IngredientManager, IPointerClickHandler
 {
     [SerializeField] IngredientData m_ingredientData;
 
@@ -10,32 +10,6 @@ public class BasicIngredientInteraction : IngredientManager, IPointerClickHandle
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Debug.Log("Is a base ingredient");
-
-        IngredientPool.AddIngredient(IngredientData);
+        IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Cauldron);
     }
-
-    // TODO Remi : For my portefolio end of session
-    //public void OnBeginDrag(PointerEventData eventData)
-    //{
-    //    Debug.Log("OnBeginDrag");
-
-
-    //    if (!CompareTag("Element"))
-    //    {
-    //        return;
-    //    }
-
-    //}
-
-    //public void OnDrag(PointerEventData eventData)
-    //{
-    //    Debug.Log("OnDrag");
-    //    transform.position = Input.mousePosition;
-    //}
-
-    //public void OnEndDrag(PointerEventData eventData)
-    //{
-    //    Debug.Log("OnEndDrag");
-    //}
 }
