@@ -8,7 +8,7 @@ using static IngredientManager;
 
 public class IngredientData : ScriptableObject
 {
-    private string Name;
+    public string Name;
     public Sprite Sprite;
     public int MaxQuantity;
     public EIngredient Ingredient;
@@ -19,6 +19,12 @@ public class IngredientData : ScriptableObject
     private void Awake()
     {
         Name = Ingredient.ToString();
+
+        if (m_receipes == null)
+        {
+            IngredientManager.LoadReceipes();
+        }
+
         SetReceipe();
     }
 

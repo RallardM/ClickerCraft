@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using static UIManager;
 
@@ -23,12 +22,6 @@ public class IngredientPool : IngredientManager
     public static List<Transform> CauldronIngredientTransforms { get { return m_cauldronIngredientTransforms; } set { m_cauldronIngredientTransforms = value; } }
     public static List<Transform> CoagulaIngredientTransforms { get { return m_coagulaIngredientTransforms; } set { m_coagulaIngredientTransforms = value; } }
 
-    public void Update()
-    {
-        UpdateContainerContent(EUiSlotContainer.Solve);
-        UpdateContainerContent(EUiSlotContainer.Cauldron);
-        UpdateContainerContent(EUiSlotContainer.Coagula);
-    }
 
     public static void AddIngredient(IngredientData ingredient, EUiSlotContainer uiSlotContainer)
     {
@@ -38,39 +31,40 @@ public class IngredientPool : IngredientManager
             return;
         }
 
-        if (GetTransitPool(uiSlotContainer).Contains(ingredient))
-        {
-            // Update the cauldron slot ingredients in case they have changed
-            UpdateSlotIngredients(CauldronIngredientTransforms, uiSlotContainer);
+        List <IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
 
-            // If the cauldron contains the ingredient
+        if (ingredientToTransitPool.Contains(ingredient))
+        {
+            // Update the container slot ingredients in case they have changed
+            UpdateContainerIngredients(CauldronIngredientTransforms, uiSlotContainer);
+
+            // If the container contains the ingredient
             // verify if it's stackable
-            // and if there is already a stack in the cauldron
+            // and if there is already a stack in the container
 
             if (ingredient.isStackable && IsThereStartedStack(ingredient, uiSlotContainer))
             {
-                //Debug.Log("Ingredient is stackable and there is already a stack in the cauldron");
+                Debug.Log("Ingredient is stackable and there is already a stack in the container");
                 AddIngredientToStartedStack(ingredient, uiSlotContainer);
             }
             return;
         }
 
-        if (GetTransitPool(uiSlotContainer).Count == 4)
+        if (ingredientToTransitPool.Count == 4)
         {
             Debug.Log("Cauldron is full");
             return;
         }
 
-        // If the ingredient is not in the cauldron
+        // If the ingredient is not in the container
         // add it for the first time
-
-        //Debug.Log("Ingredient in cauldron before add :" + IngredientsTransitToCauldron.Count);
+        Debug.Log("Ingredient added to transit list, list count before: " + ingredientToTransitPool.Count);
         LastClickedIngredient = ingredient;
-        GetTransitPool(uiSlotContainer).Add(ingredient);
-        //Debug.Log("Ingredient in cauldron after add :" + IngredientsTransitToCauldron.Count);
+        ingredientToTransitPool.Add(ingredient);
+        Debug.Log("Ingredient added to transit list, list count after: " + ingredientToTransitPool.Count);
     }
 
-    public static void UpdateSlotIngredients(List<Transform> ingredientPool, EUiSlotContainer uiSlotContainer)
+    public static void UpdateContainerIngredients(List<Transform> ingredientPool, EUiSlotContainer uiSlotContainer)
     {
         ingredientPool.Clear();
 
@@ -223,21 +217,26 @@ public class IngredientPool : IngredientManager
         }
     }
 
-    private void UpdateContainerContent(EUiSlotContainer uiSlotContainer)
+    public static void UpdateContainerContent(EUiSlotContainer uiSlotContainer)
     {
+        List<IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
+
         // Return if the list to transfrer to the container is empty
-        if (GetTransitPool(uiSlotContainer).Count == 0)
+        if (ingredientToTransitPool.Count == 0)
         {
             return;
         }
 
         // If the container is not empty
+        //Debug.Log("The container " + uiSlotContainer.ToString() + " is not empty");
 
         // Return if the quantity in the list of ingredient to transfer has not changed
-        if (GetContainerPreviousIngredientCount(uiSlotContainer) == GetTransitPool(uiSlotContainer).Count)
+        if (GetContainerPreviousIngredientCount(uiSlotContainer) == ingredientToTransitPool.Count)
         {
             return;
         }
+
+        Debug.Log("Container quantity has changed : " + uiSlotContainer.ToString());
 
         // If the quantity in the list of ingredient to transfer has changed
         // Update previous ingredient count to the current count 
@@ -245,7 +244,7 @@ public class IngredientPool : IngredientManager
         // since the last time it was updated here :
         SetContainerPreviousIngredientCount(uiSlotContainer, (uint)IngredientPool.IngredientsTransitToCauldron.Count);
 
-        for (int i = 0; i < GetTransitPool(uiSlotContainer).Count; i++)
+        for (int i = 0; i < ingredientToTransitPool.Count; i++)
         {
             if (GetContainerSlotFromIndex(uiSlotContainer, i) == null) 
             {
@@ -290,12 +289,15 @@ public class IngredientPool : IngredientManager
         switch (uiSlotContainer)
         {
             case EUiSlotContainer.Solve:
+                //Debug.Log("Returning IngredientsTransitToSolve");
                 return IngredientsTransitToSolve;
 
             case EUiSlotContainer.Cauldron:
+                //Debug.Log("Returning IngredientsTransitToCauldron");
                 return IngredientsTransitToCauldron;
 
             case EUiSlotContainer.Coagula:
+                //Debug.Log("Returning IngredientsTransitToCoagula");
                 return IngredientsTransitToCoagula;
 
             default:

@@ -108,10 +108,10 @@ public class UIManager : MonoBehaviour
     private string m_sixteenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot7";
     private string m_seventeenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot8";
 
-    private string m_firstCauldronSlotPath = "Canvas/Cauldron/CenterGrid/TopInventorySlot";
-    private string m_secondCauldronSlotPath = "Canvas/Cauldron/CenterGrid/LeftInventorySlot";
-    private string m_thirdCauldronSlotPath = "Canvas/Cauldron/CenterGrid/RightInventorySlot";
-    private string m_fourthCauldronSlotPath = "Canvas/Cauldron/CenterGrid/BottomInventorySlot";
+    private string m_firstCauldronSlotPath = "Canvas/Cauldron/TopInventorySlot";
+    private string m_secondCauldronSlotPath = "Canvas/Cauldron/LeftInventorySlot";
+    private string m_thirdCauldronSlotPath = "Canvas/Cauldron/RightInventorySlot";
+    private string m_fourthCauldronSlotPath = "Canvas/Cauldron/BottomInventorySlot";
 
     private string m_firstCoagulaSlotPath = "Canvas/Coagula/RightSquareGrid/InventorySlot1";
     private string m_secondCoagulaSlotPath = "Canvas/Coagula/RightSquareGrid/InventorySlot2";

@@ -8,7 +8,7 @@ public class CauldronInteraction : IngredientManager, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         // Update the cauldron slot ingredients in case they have changed
-        IngredientPool.UpdateSlotIngredients(IngredientPool.CauldronIngredientTransforms, UIManager.EUiSlotContainer.Cauldron);
+        IngredientPool.UpdateContainerIngredients(IngredientPool.CauldronIngredientTransforms, UIManager.EUiSlotContainer.Cauldron);
 
         if (!CheckCauldronIngredients())
         {

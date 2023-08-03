@@ -1,5 +1,6 @@
 
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static UIManager;
@@ -268,6 +269,27 @@ public class IngredientManager : MonoBehaviour
             Debug.LogError("One of the Prefab or ingredient data not found.");
         }
 
+        if (m_receipes == null)
+        {
+            LoadReceipes();
+        }
+    }
+
+    public void Update()
+    {
+        IngredientPool.UpdateContainerContent(EUiSlotContainer.Solve);
+        IngredientPool.UpdateContainerContent(EUiSlotContainer.Cauldron);
+        IngredientPool.UpdateContainerContent(EUiSlotContainer.Coagula);
+    }
+
+
+    public static void LoadReceipes()
+    {
+        if (m_fireReceipe == null)
+        {
+            Debug.LogError("A receipe is null, therefore not properly loaded.");
+        }
+
         m_receipes = new EIngredient[(int)EIngredient.Count + 1][]
         {
                 m_fireReceipe, m_airReceipe, m_earthReceipe, m_waterReceipe, m_etherReceipe, // To add 0-4 elements for the SetReceipe() function // 5 elements
@@ -277,7 +299,7 @@ public class IngredientManager : MonoBehaviour
                 m_fireboltReceipe, m_fireboltReceipeExtended, m_duststormReceipe, m_duststormReceipeExtended, m_thunderstormReceipe, m_thunderstormReceipeExtended, m_tornadoReceipe, m_fungiReceipe, m_fungiReceipeExtended, // 9 elements
                 m_pyroidReceipe, m_pyroidReceipeExtended, m_golemReceipe, m_golemReceipeExtended, m_undineReceipe, m_undineReceipeExtended, m_sylphReceipe, m_sylphReceipeExtended, m_spiritReceipe, // 9 elements
                 m_nonCraftable // 1 element 
-        };// Total 42 elements
+        };// Total 42 elementsthrow new NotImplementedException();
     }
 
     private static void IncreaseUiContainerPreviousIngredientCount(EUiSlotContainer uiSlotContainer)

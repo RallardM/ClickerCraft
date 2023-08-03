@@ -10,6 +10,7 @@ public class BasicIngredientInteraction : IngredientManager, IPointerClickHandle
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        //Debug.Log("Clicked: " + IngredientData.Name);
         IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Cauldron);
     }
 }

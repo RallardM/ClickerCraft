@@ -33,21 +33,21 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
     {
         get
         {
-            if (transform.parent.parent.name == "Solve")
+            if (transform.parent.CompareTag("Solve"))
             {
                 return UIManager.EUiSlotContainer.Solve;
             }
-            else if (transform.parent.parent.name == "Cauldron")
+            else if (transform.parent.CompareTag("Cauldron"))
             {
                 return UIManager.EUiSlotContainer.Cauldron;
             }
-            else if (transform.parent.parent.name == "Coagula")
+            else if (transform.parent.CompareTag("Coagula"))
             {
                 return UIManager.EUiSlotContainer.Coagula;
             }
             else
             {
-                Debug.LogError("The parent of the ingredient is not a valid slot");
+                Debug.LogError("The parent of the ingredient is not a valid slot, tag : " + transform.parent.tag + " Name : " + transform.name );
                 return UIManager.EUiSlotContainer.Count;
             }
         }
