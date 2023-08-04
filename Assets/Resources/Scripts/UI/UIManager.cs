@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -134,9 +135,9 @@ public class UIManager : MonoBehaviour
     private static IngredientData m_lastClickedIngredient;
     private static uint m_lastClickedIngredientQuantity = 0;
 
-    public static GameObject[] SolveSlots { get => m_solveSlots; set => m_solveSlots = value; }
-    public static GameObject[] CauldronSlots { get => m_cauldronSlots; set => m_cauldronSlots = value; }
-    public static GameObject[] CoagulaSlots { get => m_coagulaSlots; set => m_coagulaSlots = value; }
+    public static GameObject[] SolveSlots { get => m_solveSlots; }
+    public static GameObject[] CauldronSlots { get => m_cauldronSlots; }
+    public static GameObject[] CoagulaSlots { get => m_coagulaSlots; }
 
     public static IngredientData LastClickedIngredient { get => m_lastClickedIngredient; set => m_lastClickedIngredient = value; }
     public static uint LastClickedIngredientQuantity { get => m_lastClickedIngredientQuantity; set => m_lastClickedIngredientQuantity = value; }
@@ -269,23 +270,39 @@ public class UIManager : MonoBehaviour
 
     public static GameObject GetContainerSlotFromIndex(EUiSlotContainer uiSlotContainer, int index)
     {
-        if (uiSlotContainer == EUiSlotContainer.Solve)
+        switch (uiSlotContainer)
         {
-            return m_solveSlots[index];
-        }
-        else if (uiSlotContainer == EUiSlotContainer.Cauldron)
-        {
-            return m_cauldronSlots[index];
-        }
-        else if (uiSlotContainer == EUiSlotContainer.Coagula)
-        {
-            return m_coagulaSlots[index];
-        }
-        else
-        {
-            Debug.LogError("Invalid UI Slot Container.");
-            return null;
+            case EUiSlotContainer.Solve:
+                return m_solveSlots[index];
+
+            case EUiSlotContainer.Cauldron:
+             return m_cauldronSlots[index];
+
+            case EUiSlotContainer.Coagula:
+                return m_coagulaSlots[index];
+
+            default:
+                Debug.LogError("Invalid UI Slot Container.");
+                return null;
         }
     }
 
+    public static GameObject[] GetContainer(EUiSlotContainer uiSlotContainer)
+    {
+        switch (uiSlotContainer)
+        {
+            case EUiSlotContainer.Solve:
+                return SolveSlots;
+
+            case EUiSlotContainer.Cauldron:
+                return CauldronSlots;
+
+            case EUiSlotContainer.Coagula:
+                return CoagulaSlots;
+
+            default:
+                Debug.LogError("uiSlotContainer is null");
+                return null;
+        }
+    }
 }
