@@ -67,6 +67,11 @@ public class IngredientUI : UIManager
         if (m_ingredientInteraction != null && m_image.sprite == null)
         {
             m_image.sprite = m_ingredientInteraction.IngredientData.Sprite;
+
+            // Set the ingredient prefab transform to visible
+            // so it does not appear as a white square
+            // while it receives its respective sprite 
+            GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
     }
 

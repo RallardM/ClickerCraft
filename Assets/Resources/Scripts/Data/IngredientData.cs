@@ -22,7 +22,7 @@ public class IngredientData : ScriptableObject
 
         if (m_receipes == null)
         {
-            IngredientManager.LoadReceipes();
+            LoadReceipes();
         }
 
         SetReceipe();

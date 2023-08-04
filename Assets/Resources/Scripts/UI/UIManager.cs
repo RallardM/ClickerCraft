@@ -90,23 +90,23 @@ public class UIManager : MonoBehaviour
     private static Sprite m_sylphSprite;
     private static Sprite m_spiritSprite;
 
-    private string m_firstSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot1";
-    private string m_secondSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot2";
-    private string m_thirdSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot3";
-    private string m_fourthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot4";
-    private string m_fifthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot5";
-    private string m_sixthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot6";
-    private string m_seventhSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot7";
-    private string m_eigthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot8";
-    private string m_ninethSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot9";
-    private string m_tenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot1";
-    private string m_eleventhSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot2";
-    private string m_twelfthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot3";
-    private string m_thirteenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot4";
-    private string m_fourteenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot5";
-    private string m_fifteenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot6";
-    private string m_sixteenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot7";
-    private string m_seventeenthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot8";
+    private string m_firstSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot1";
+    private string m_secondSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot2";
+    private string m_thirdSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot3";
+    private string m_fourthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot4";
+    private string m_fifthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot5";
+    private string m_sixthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot6";
+    private string m_seventhSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot7";
+    private string m_eigthSolveSlotPath = "Canvas/Solve/LeftHorizontalGrid/InventorySlot8";
+    private string m_ninethSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot1";
+    private string m_tenthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot2";
+    private string m_eleventhSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot3";
+    private string m_twelfthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot4";
+    private string m_thirteenthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot5";
+    private string m_fourteenthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot6";
+    private string m_fifteenthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot7";
+    private string m_sixteenthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot8";
+    private string m_seventeenthSolveSlotPath = "Canvas/Solve/LeftSquareGrid/InventorySlot9";
 
     private string m_firstCauldronSlotPath = "Canvas/Cauldron/TopInventorySlot";
     private string m_secondCauldronSlotPath = "Canvas/Cauldron/LeftInventorySlot";
@@ -132,12 +132,14 @@ public class UIManager : MonoBehaviour
     private string m_seventeenthCoagulaSlotPath = "Canvas/Coagula/RightHorizontalGrid/InventorySlot8";
 
     private static IngredientData m_lastClickedIngredient;
+    private static uint m_lastClickedIngredientQuantity = 0;
 
     public static GameObject[] SolveSlots { get => m_solveSlots; set => m_solveSlots = value; }
     public static GameObject[] CauldronSlots { get => m_cauldronSlots; set => m_cauldronSlots = value; }
     public static GameObject[] CoagulaSlots { get => m_coagulaSlots; set => m_coagulaSlots = value; }
 
     public static IngredientData LastClickedIngredient { get => m_lastClickedIngredient; set => m_lastClickedIngredient = value; }
+    public static uint LastClickedIngredientQuantity { get => m_lastClickedIngredientQuantity; set => m_lastClickedIngredientQuantity = value; }
 
     private void Awake()
     {

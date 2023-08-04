@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UIManager;
 
 public class IngredientPool : IngredientManager
@@ -23,7 +24,7 @@ public class IngredientPool : IngredientManager
     public static List<Transform> CoagulaIngredientTransforms { get { return m_coagulaIngredientTransforms; } set { m_coagulaIngredientTransforms = value; } }
 
 
-    public static void AddIngredient(IngredientData ingredient, EUiSlotContainer uiSlotContainer)
+    public static void AddIngredient(IngredientData ingredient, EUiSlotContainer uiSlotContainer, uint ingredientQuantity)
     {
         if (ingredient == null)
         {
@@ -44,7 +45,7 @@ public class IngredientPool : IngredientManager
 
             if (ingredient.isStackable && IsThereStartedStack(ingredient, uiSlotContainer))
             {
-                Debug.Log("Ingredient is stackable and there is already a stack in the container");
+                //Debug.Log("Ingredient is stackable and there is already a stack in the container");
                 AddIngredientToStartedStack(ingredient, uiSlotContainer);
             }
             return;
@@ -58,10 +59,11 @@ public class IngredientPool : IngredientManager
 
         // If the ingredient is not in the container
         // add it for the first time
-        Debug.Log("Ingredient added to transit list, list count before: " + ingredientToTransitPool.Count);
+        //Debug.Log("Ingredient added to transit list, list count before: " + ingredientToTransitPool.Count);
         LastClickedIngredient = ingredient;
+        LastClickedIngredientQuantity = ingredientQuantity;
         ingredientToTransitPool.Add(ingredient);
-        Debug.Log("Ingredient added to transit list, list count after: " + ingredientToTransitPool.Count);
+        //Debug.Log("Ingredient added to transit list, list count after: " + ingredientToTransitPool.Count);
     }
 
     public static void UpdateContainerIngredients(List<Transform> ingredientPool, EUiSlotContainer uiSlotContainer)
@@ -236,13 +238,24 @@ public class IngredientPool : IngredientManager
             return;
         }
 
-        Debug.Log("Container quantity has changed : " + uiSlotContainer.ToString());
+        //// Return if the quantity in the list of ingredient to transfer has diminushed
+        //// if it has diminushed it means that an ingredient has been removed from the container
+        //// and nothing has to be transfered to the container
+        //if (GetContainerPreviousIngredientCount(uiSlotContainer) > ingredientToTransitPool.Count)
+        //{
+        //    //Debug.Log("Container quantity has diminushed : " + uiSlotContainer.ToString());
+        //    return;
+        //}
+
+        //Debug.Log("Container quantity has changed : " + uiSlotContainer.ToString());
 
         // If the quantity in the list of ingredient to transfer has changed
+        // and has increased (meaning that an ingredient needs to be physically added)
         // Update previous ingredient count to the current count 
-        // PreviousIngredientCount serves as a way to know if the list of ingredient to transfer has changed
+        // PreviousIngredientCount serves as a way to know if the list
+        // of ingredient to transfer has changed
         // since the last time it was updated here :
-        SetContainerPreviousIngredientCount(uiSlotContainer, (uint)IngredientPool.IngredientsTransitToCauldron.Count);
+        SetContainerPreviousIngredientCount(uiSlotContainer, (uint)GetTransitPool(uiSlotContainer).Count);
 
         for (int i = 0; i < ingredientToTransitPool.Count; i++)
         {
@@ -254,16 +267,21 @@ public class IngredientPool : IngredientManager
 
             GameObject containerSlot = GetContainerSlotFromIndex(uiSlotContainer, i); 
 
+            // Continue if the container slot is already occupied by a ingredient
             if (containerSlot.transform.childCount > 0)
             {
-                //Debug.Log("Container slot is not empty");
+                //Debug.Log("Container slot is not empty : " + uiSlotContainer.ToString() + " cout : " + containerSlot.transform.childCount);
                 continue;
             }
 
-            //Debug.Log("Creating ingredient in cauldron"); 
-            Transform ingredientPrefabTransform = Instantiate(GetIngredientPrefab(), containerSlot.transform).GetComponent<Transform>();
+            //Debug.Log("Creating ingredient in container : " + uiSlotContainer.ToString());
+            //if (uiSlotContainer == EUiSlotContainer.Cauldron)
+            //{
+            //    Debug.Log("Creating ingredient in cauldron"); // TODO : Remove after debug
+            //}
 
-            // Transfere the ingredient data from the clicked ingredient to the new ingredient in the container
+            // Create the ingredient in the container slot that is empty
+            Transform ingredientPrefabTransform = Instantiate(GetIngredientPrefab(), containerSlot.transform).GetComponent<Transform>();
 
             if (ingredientPrefabTransform == null)
             {
@@ -278,13 +296,17 @@ public class IngredientPool : IngredientManager
                 Debug.LogError("Ingredient interaction is null");
                 continue;
             }
-            //Transform LastClickedIngredientTransform = LastClickedIngredient.GetComponent<Transform>();
+
+            // Transfere the ingredient data from the clicked ingredient to the new ingredient created in the current container
+            Debug.Log("Transfering ingredient data of : " + LastClickedIngredient + " to : " + uiSlotContainer.ToString());
             ingredientInteraction.IngredientData = LastClickedIngredient;
+            ingredientInteraction.CurrentQuantity = LastClickedIngredientQuantity;
             LastClickedIngredient = null;
+            LastClickedIngredientQuantity = 0;
         }
     }
 
-    private static List<IngredientData> GetTransitPool(EUiSlotContainer uiSlotContainer)
+    public static List<IngredientData> GetTransitPool(EUiSlotContainer uiSlotContainer)
     {
         switch (uiSlotContainer)
         {

@@ -1,9 +1,8 @@
 
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CauldronInteraction : IngredientManager, IPointerClickHandler
+public class CraftingInteraction : IngredientManager, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -17,7 +16,8 @@ public class CauldronInteraction : IngredientManager, IPointerClickHandler
         }
 
         EIngredient resultingIngredient = GetResultingIngredient();
-        //IngredientPool.CraftNewIngredient(resultingIngredient);
-        IngredientPool.AddIngredient(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula);
+
+        uint singleQuantity = 1;
+        IngredientPool.AddIngredient(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula, singleQuantity);
     }
 }

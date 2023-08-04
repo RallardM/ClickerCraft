@@ -1,6 +1,8 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UIManager;
 
 public class IngredientInteraction : IngredientManager, IPointerClickHandler
 {
@@ -11,44 +13,94 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Is an ingredient inside the UI slot : " + GetParentUiSlot.ToString());
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            TransferIngredient();
+            RemoveIngredientFromContainerAndPool();
+            EUiSlotContainer parentUiSlot = GetParentUiSlot;
+            SetContainerPreviousIngredientCount(parentUiSlot, (uint)IngredientPool.GetTransitPool(parentUiSlot).Count);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            SubstractIngredient();
+        }
+    }
 
+    private void TransferIngredient()
+    {
+        if (transform.parent.CompareTag("Solve"))
+        {
+            IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Cauldron, CurrentQuantity);
+        }
+        else if (transform.parent.CompareTag("Cauldron"))
+        {
+            IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Solve, CurrentQuantity);
+        }
+        else if (transform.parent.CompareTag("Coagula")) // Coagula only receive newly crafted ingredients
+        {
+            IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Solve, CurrentQuantity);
+        }
+        else
+        {
+            Debug.LogError("The parent of the ingredient is not a valid slot, tag : " + transform.parent.tag + " Name : " + transform.name);
+        }
+    }
+
+    private void SubstractIngredient()
+    {
+        //Debug.Log("Is an ingredient inside the UI slot : " + GetParentUiSlot.ToString());
+
+        if (IsRemovedFromStack())
+        {
+            return;
+        }
+
+        RemoveIngredientFromContainerAndPool();
+    }
+
+    private void RemoveIngredientFromContainerAndPool()
+    {
+        //Debug.Log("Remove the ingredient from the container");
+        EUiSlotContainer parentUiSlot = GetParentUiSlot;
+        IngredientPool.RemoveIngredient(IngredientData, parentUiSlot);
+        SetContainerPreviousIngredientCount(parentUiSlot, (uint)IngredientPool.GetTransitPool(parentUiSlot).Count);
+        Destroy(gameObject);
+    }
+
+    private bool IsRemovedFromStack()
+    {
         //Check if the clicked ingredient has stacked ingredients
         if (CurrentQuantity > 1)
         {
             //Remove one ingredient from the stack
             //Debug.Log("Remove one ingredient from the stack");
             CurrentQuantity--;
-            return;
+            return true;
         }
 
-        //Debug.Log("Remove the ingredient from the cauldron");
-        IngredientPool.RemoveIngredient(IngredientData, GetParentUiSlot);
-        Destroy(gameObject);
-        //InGameCauldronPreviousIngredientQuantity--; //TODO: should be relatable to all containers except the basic ingredients not only the cauldron
-        ReduceUiContainerPreviousIngredientCount(GetParentUiSlot);
+        return false;
     }
 
-    private UIManager.EUiSlotContainer GetParentUiSlot
+    private EUiSlotContainer GetParentUiSlot
     {
         get
         {
             if (transform.parent.CompareTag("Solve"))
             {
-                return UIManager.EUiSlotContainer.Solve;
+                return EUiSlotContainer.Solve;
             }
             else if (transform.parent.CompareTag("Cauldron"))
             {
-                return UIManager.EUiSlotContainer.Cauldron;
+                return EUiSlotContainer.Cauldron;
             }
             else if (transform.parent.CompareTag("Coagula"))
             {
-                return UIManager.EUiSlotContainer.Coagula;
+                return EUiSlotContainer.Coagula;
             }
             else
             {
                 Debug.LogError("The parent of the ingredient is not a valid slot, tag : " + transform.parent.tag + " Name : " + transform.name );
-                return UIManager.EUiSlotContainer.Count;
+                return EUiSlotContainer.Count;
             }
         }
     }
