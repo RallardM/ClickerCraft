@@ -11,7 +11,7 @@ public class BasicIngredientInteraction : IngredientManager, IPointerClickHandle
     public void OnPointerClick(PointerEventData eventData)
     {
         //Debug.Log("Clicked: " + IngredientData.Name);
-        uint singleQuantity = 1;
-        IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Cauldron, singleQuantity);
+        UIManager.LastClickedIngredientQuantity = 1;
+        IngredientPool.AddIngredientToTransitPool(IngredientData, UIManager.EUiSlotContainer.Cauldron);
     }
 }

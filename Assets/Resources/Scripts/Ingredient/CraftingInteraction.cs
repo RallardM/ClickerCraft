@@ -17,7 +17,7 @@ public class CraftingInteraction : IngredientManager, IPointerClickHandler
 
         EIngredient resultingIngredient = GetResultingIngredient();
 
-        uint singleQuantity = 1;
-        IngredientPool.AddIngredient(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula, singleQuantity);
+        UIManager.LastClickedIngredientQuantity = 1;
+        IngredientPool.AddIngredientToTransitPool(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula);
     }
 }

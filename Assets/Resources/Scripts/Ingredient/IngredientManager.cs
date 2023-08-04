@@ -241,7 +241,6 @@ public class IngredientManager : MonoBehaviour
         IngredientPool.UpdateContainerContent(EUiSlotContainer.Coagula);
     }
 
-
     public static void LoadReceipes()
     {
         if (m_fireReceipe == null)
@@ -260,28 +259,6 @@ public class IngredientManager : MonoBehaviour
                 m_nonCraftable // 1 element 
         };// Total 42 elementsthrow new NotImplementedException();
     }
-
-    //private static void IncreaseUiContainerPreviousIngredientCount(EUiSlotContainer uiSlotContainer)
-    //{
-    //    switch (uiSlotContainer)
-    //    {
-    //        case EUiSlotContainer.Solve:
-    //            m_solveContainerPreviousIngredientCount++;
-    //            break;
-
-    //        case EUiSlotContainer.Cauldron:
-    //            m_cauldronContainerPreviousIngredientCount++;
-    //            break;
-
-    //        case EUiSlotContainer.Coagula:
-    //            m_coagulaContainerPreviousIngredientCount++;
-    //            break;
-
-    //        default:
-    //            Debug.LogError("uiSlotContainer is null");
-    //            break;
-    //    }
-    //}
 
     private static bool IsCauldronMatchingRecipe(EIngredient[] receipe)
     {

@@ -16,9 +16,10 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             TransferIngredient();
-            RemoveIngredientFromContainerAndPool();
+            RemoveIngredientFromPool();
             EUiSlotContainer parentUiSlot = GetParentUiSlot;
             SetContainerPreviousIngredientCount(parentUiSlot, (uint)IngredientPool.GetTransitPool(parentUiSlot).Count);
+            Destroy(gameObject);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -30,15 +31,18 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
     {
         if (transform.parent.CompareTag("Solve"))
         {
-            IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Cauldron, CurrentQuantity);
+            LastClickedIngredientQuantity = CurrentQuantity;
+            IngredientPool.AddIngredientToTransitPool(IngredientData, UIManager.EUiSlotContainer.Cauldron);
         }
         else if (transform.parent.CompareTag("Cauldron"))
         {
-            IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Solve, CurrentQuantity);
+            LastClickedIngredientQuantity = CurrentQuantity;
+            IngredientPool.AddIngredientToTransitPool(IngredientData, UIManager.EUiSlotContainer.Solve);
         }
         else if (transform.parent.CompareTag("Coagula")) // Coagula only receive newly crafted ingredients
         {
-            IngredientPool.AddIngredient(IngredientData, UIManager.EUiSlotContainer.Solve, CurrentQuantity);
+            LastClickedIngredientQuantity = CurrentQuantity;
+            IngredientPool.AddIngredientToTransitPool(IngredientData, UIManager.EUiSlotContainer.Solve);
         }
         else
         {
@@ -55,16 +59,17 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
             return;
         }
 
-        RemoveIngredientFromContainerAndPool();
+        RemoveIngredientFromPool();
+        Destroy(gameObject);
     }
 
-    private void RemoveIngredientFromContainerAndPool()
+    private void RemoveIngredientFromPool()
     {
         //Debug.Log("Remove the ingredient from the container");
         EUiSlotContainer parentUiSlot = GetParentUiSlot;
-        IngredientPool.RemoveIngredient(IngredientData, parentUiSlot);
+        IngredientPool.RemoveIngredientFromTransitPool(IngredientData, parentUiSlot);
+        IngredientPool.RemoveIngredientFromTransformPool(transform, parentUiSlot);
         SetContainerPreviousIngredientCount(parentUiSlot, (uint)IngredientPool.GetTransitPool(parentUiSlot).Count);
-        Destroy(gameObject);
     }
 
     private bool IsRemovedFromStack()

@@ -10,7 +10,9 @@ public class IngredientData : ScriptableObject
 {
     public string Name;
     public Sprite Sprite;
-    public int MaxQuantity;
+    public uint ID;
+    private static uint s_ID;
+    public uint MaxQuantity;
     public EIngredient Ingredient;
     public List<Array> Receipes = new List<Array>();
     public bool isCraftable;
@@ -19,6 +21,7 @@ public class IngredientData : ScriptableObject
     private void Awake()
     {
         Name = Ingredient.ToString();
+        ID = s_ID++;
 
         if (m_receipes == null)
         {
