@@ -34,21 +34,23 @@ public class IngredientPool : IngredientManager
 
         List <IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
 
-        if (ingredientToTransitPool.Contains(ingredient))
-        {
-            // Update the container slot ingredients in case they have changed
-            UpdateContainerIngredients(CauldronIngredientTransforms, uiSlotContainer);
+        //// Return if the ingredient is not in the transit pool
+        //if (!ingredientToTransitPool.Contains(ingredient))
+        //{
+        //    return;
+        //}
 
-            // If the container contains the ingredient
-            // verify if it's stackable
-            // and if there is already a stack in the container
-            bool isStackable = ingredient.isStackable;
-            bool isThereStartedStack = IsThereStartedStack(ingredient, uiSlotContainer);
-            
-            if (!isStackable || !isThereStartedStack)
-            {
-                return;
-            }
+        // Update the container slot ingredients in case they have changed
+        UpdateContainerIngredients(CauldronIngredientTransforms, uiSlotContainer);
+
+        // If the container contains the ingredient
+        // verify if it's stackable
+        // and if there is already a stack in the container
+        bool isStackable = ingredient.isStackable;
+        bool isThereASmallEnoughStack = IsThereASmallEnoughStack(ingredient, uiSlotContainer);
+
+        if (isStackable && isThereASmallEnoughStack)
+        {
 
             bool isSumSmallerThanMaxQuantity = GetStartedStack(ingredient, uiSlotContainer).GetComponent<IngredientInteraction>().CurrentQuantity + LastClickedIngredientQuantity <= ingredient.MaxQuantity;
 
@@ -76,6 +78,18 @@ public class IngredientPool : IngredientManager
 
     public static void UpdateContainerIngredients(List<Transform> ingredientPool, EUiSlotContainer uiSlotContainer)
     {
+        if (ingredientPool == null)
+        {
+            Debug.LogError("Ingredient pool is null");
+            return;
+        }
+
+        if (ingredientPool.Count == 0)
+        {
+            //Debug.Log("Ingredient pool is empty");
+            return;
+        }
+
         ingredientPool.Clear();
 
         foreach (GameObject prefabTransform in GetIngredientsParentSlotsPool(uiSlotContainer))
@@ -140,7 +154,7 @@ public class IngredientPool : IngredientManager
         }
     }
 
-    private static bool IsThereStartedStack(IngredientData addedIngredient, EUiSlotContainer uiSlotContainer)
+    private static bool IsThereASmallEnoughStack(IngredientData addedIngredient, EUiSlotContainer uiSlotContainer)
     {
         List<Transform> ingredientTransformPool = GetInGameIngredientsTransformPool(uiSlotContainer);
         foreach (Transform prefabTransform in ingredientTransformPool)
@@ -252,7 +266,7 @@ public class IngredientPool : IngredientManager
             //    return;
             //}
 
-            if (prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity + LastClickedIngredientQuantity < ingredientInContainer.MaxQuantity)
+            if (prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity + LastClickedIngredientQuantity <= ingredientInContainer.MaxQuantity)
             {
                 Debug.Log("Adding ingredient to the container slot");
                 prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity += LastClickedIngredientQuantity;
