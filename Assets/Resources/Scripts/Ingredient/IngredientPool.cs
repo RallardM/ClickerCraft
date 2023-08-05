@@ -34,12 +34,6 @@ public class IngredientPool : IngredientManager
 
         List <IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
 
-        //// Return if the ingredient is not in the transit pool
-        //if (!ingredientToTransitPool.Contains(ingredient))
-        //{
-        //    return;
-        //}
-
         // Update the container slot ingredients in case they have changed
         UpdateContainerIngredients(CauldronIngredientTransforms, uiSlotContainer);
 
@@ -276,107 +270,6 @@ public class IngredientPool : IngredientManager
         }
     }
 
-    //public static void UpdateContainerContent(EUiSlotContainer uiSlotContainer)
-    //{
-    //    List<IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
-
-    //    // Return if the list to transfrer to the container is empty
-    //    if (ingredientToTransitPool.Count == 0)
-    //    {
-    //        return;
-    //    }
-
-    //    // If the container is not empty
-    //    //Debug.Log("The container " + uiSlotContainer.ToString() + " is not empty");
-
-    //    // Return if the quantity in the list of ingredient to transfer has not changed
-    //    if (GetContainerPreviousIngredientCount(uiSlotContainer) == ingredientToTransitPool.Count)
-    //    {
-    //        return;
-    //    }
-
-    //    //Debug.Log("Container quantity has changed : " + uiSlotContainer.ToString());
-
-    //    // If the quantity in the list of ingredient to transfer has changed
-    //    // and has increased (meaning that an ingredient needs to be physically added)
-    //    // Update previous ingredient count to the current count 
-    //    // PreviousIngredientCount serves as a way to know if the list
-    //    // of ingredient to transfer has changed
-    //    // since the last time it was updated here :
-    //    SetContainerPreviousIngredientCount(uiSlotContainer, (uint)GetTransitPool(uiSlotContainer).Count);
-
-    //    for (int i = 0; i < ingredientToTransitPool.Count; i++)
-    //    {
-    //        if (GetContainerSlotFromIndex(uiSlotContainer, i) == null) 
-    //        {
-    //            Debug.LogError("Container slot is null : " + i); 
-    //            continue;
-    //        }
-
-    //        GameObject containerSlot = GetContainerSlotFromIndex(uiSlotContainer, i); 
-
-    //        // if the container slot is already occupied by a ingredient
-    //        if (containerSlot.transform.childCount > 0)
-    //        {
-    //            Debug.Log("Container slot is already occupied by an ingredient");
-    //            // If the ingredient type in the container slot is the same as the ingredient type to transfer but have different IDs
-    //            Debug.Log("Container ingredient ID : " + containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.ID);
-    //            Debug.Log("Ingredient to transfer ID : " + ingredientToTransitPool[i].ID);
-    //            if (containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.Ingredient == ingredientToTransitPool[i].Ingredient 
-    //                && containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.ID != ingredientToTransitPool[i].ID)
-    //            {
-    //                Debug.Log("Ingredient in the container slot : " + containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.Ingredient + " is the same as the ingredient to transfer : " + ingredientToTransitPool[i].Ingredient);
-    //                // If the quantity of the transfered ingredient plus the quantity of the ingredient in the container slot is smaller 
-    //                // than the max quantity of the ingredient, add the clicked quantity to the ingredient in the container slot
-    //                if (containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().CurrentQuantity + LastClickedIngredientQuantity < ingredientToTransitPool[i].MaxQuantity)
-    //                {
-    //                    Debug.Log("Adding ingredient to the container slot");
-    //                    containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().CurrentQuantity += LastClickedIngredientQuantity;
-    //                    LastClickedIngredient = null;
-    //                    LastClickedIngredientQuantity = 0;
-    //                    break;
-    //                }
-    //                Debug.Log("Ingredient in the container slot is the same as the ingredient to transfer but the quantity is maxed out");
-    //            }
-    //            // If the ingredient in the container slot is not the same as the ingredient to transfer
-    //            else
-    //            {
-    //                Debug.Log("Ingredient in the container slot is not the same as the ingredient to transfer");
-    //                continue;
-    //            }
-
-    //            Debug.Log("Ingredient in the container slot is not the same as the ingredient to transfer");
-    //            continue;
-    //        }
-
-    //        //Debug.Log("Instantiating ingredient in the container slot");
-
-    //        // Create the ingredient in the container slot that is empty
-    //        Transform ingredientPrefabTransform = Instantiate(GetIngredientPrefab(), containerSlot.transform).GetComponent<Transform>();
-
-    //        if (ingredientPrefabTransform == null)
-    //        {
-    //            Debug.LogError("Ingredient prefab transform is null");
-    //            continue;
-    //        }
-
-    //        IngredientInteraction ingredientInteraction = ingredientPrefabTransform.GetComponent<IngredientInteraction>();
-
-    //        if (ingredientInteraction == null)
-    //        {
-    //            Debug.LogError("Ingredient interaction is null");
-    //            continue;
-    //        }
-
-    //        // Transfere the ingredient data from the clicked ingredient to the new ingredient created in the current container
-    //        //Debug.Log("Transfering ingredient data of : " + LastClickedIngredient + " to : " + uiSlotContainer.ToString());
-    //        ingredientInteraction.IngredientData = LastClickedIngredient;
-    //        ingredientInteraction.CurrentQuantity = LastClickedIngredientQuantity;
-    //        LastClickedIngredient = null;
-    //        LastClickedIngredientQuantity = 0;
-    //    }
-    //}
-
     public static void UpdateContainerContent(EUiSlotContainer uiSlotContainer)
     {
         List<IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
@@ -406,12 +299,6 @@ public class IngredientPool : IngredientManager
         // PreviousIngredientCount serves as a way to know if the list
         // of ingredient to transfer has changed since the last time it was updated here :
         SetContainerPreviousIngredientCount(uiSlotContainer, (uint)GetTransitPool(uiSlotContainer).Count);
-
-        //// Add and return if the container already has an ingredient of the same type as the ingredient to transfer
-        //if (HasSimilarIngredientStack(uiSlotContainer))
-        //{
-        //    return;
-        //}
 
         for (int i = 0; i < ingredientToTransitPool.Count; i++)
         {
@@ -480,56 +367,6 @@ public class IngredientPool : IngredientManager
                 return null;
         }
     }
-
-    //private static bool HasSimilarIngredientStack(EUiSlotContainer uiSlotContainer)
-    //{
-    //    List<IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
-
-    //    for (int i = 0; i < ingredientToTransitPool.Count; i++)
-    //    {
-    //        if (GetContainerSlotFromIndex(uiSlotContainer, i) == null)
-    //        {
-    //            Debug.LogError("Container slot is null : " + i);
-    //            continue;
-    //        }
-
-    //        GameObject containerSlot = GetContainerSlotFromIndex(uiSlotContainer, i);
-
-    //        // Cotinue if the container slot is empty
-    //        if (containerSlot.transform.childCount == 0)
-    //        {
-    //            continue;
-    //        }
-
-    //        // Continue if the ingredient type in the container slot is not the same as the ingredient type to transfer
-    //        if (containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.Ingredient == ingredientToTransitPool[i].Ingredient)
-    //        {
-    //            continue;
-    //        }
-
-    //        // if the container slot is already occupied by a ingredient of same type
-    //        // Continue if they do not have the same ID,
-    //        // that way we don't affect the ingredient from the transit list that already has been transfered to the container slot
-    //        Debug.Log("Container ingredient ID : " + containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.ID);
-    //        Debug.Log("Ingredient to transfer ID : " + ingredientToTransitPool[i].ID);
-    //        if (containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().IngredientData.ID != ingredientToTransitPool[i].ID)
-    //        {
-    //            continue;
-    //        }
-
-    //        // If the quantity of the transfered ingredient plus the quantity of the ingredient in the container slot is smaller 
-    //        // than the max quantity of the ingredient, add the clicked quantity to the ingredient in the container slot
-    //        if (containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().CurrentQuantity + LastClickedIngredientQuantity < ingredientToTransitPool[i].MaxQuantity)
-    //        {
-    //            Debug.Log("Adding ingredient to the container slot");
-    //            containerSlot.transform.GetChild(0).GetComponent<IngredientInteraction>().CurrentQuantity += LastClickedIngredientQuantity;
-    //            LastClickedIngredient = null;
-    //            LastClickedIngredientQuantity = 0;
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
 
     private static void SetInGameIngredientsTransformPool(Transform ingredientTransform, EUiSlotContainer uiSlotContainer)
     {
