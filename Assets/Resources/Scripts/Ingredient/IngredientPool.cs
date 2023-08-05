@@ -1,9 +1,6 @@
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using static UIManager;
 
 public class IngredientPool : IngredientManager
