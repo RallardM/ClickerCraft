@@ -14,8 +14,9 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             TransferIngredient();
-            RemoveIngredientFromPool();
             EUiSlotContainer parentUiSlot = GetParentUiSlot;
+            IngredientPool.RemoveIngredientFromTransitPool(IngredientData, parentUiSlot);
+            IngredientPool.RemoveIngredientFromTransformPool(transform, parentUiSlot);
             SetContainerPreviousIngredientCount(parentUiSlot, (uint)IngredientPool.GetTransitPool(parentUiSlot).Count);
             Destroy(gameObject);
         }
@@ -44,7 +45,7 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
         }
         else
         {
-            Debug.LogError("The parent of the ingredient is not a valid slot, tag : " + transform.parent.tag + " Name : " + transform.name);
+            Debug.LogError("The parent of the ingredient is not a valid slot, tag : " + transform.parent.tag + " Name : " + transform.name + " Parent name : " + transform.parent.name);
         }
     }
 
@@ -57,17 +58,11 @@ public class IngredientInteraction : IngredientManager, IPointerClickHandler
             return;
         }
 
-        RemoveIngredientFromPool();
-        Destroy(gameObject);
-    }
-
-    private void RemoveIngredientFromPool()
-    {
-        //Debug.Log("Remove the ingredient from the container");
         EUiSlotContainer parentUiSlot = GetParentUiSlot;
         IngredientPool.RemoveIngredientFromTransitPool(IngredientData, parentUiSlot);
         IngredientPool.RemoveIngredientFromTransformPool(transform, parentUiSlot);
         SetContainerPreviousIngredientCount(parentUiSlot, (uint)IngredientPool.GetTransitPool(parentUiSlot).Count);
+        Destroy(gameObject);
     }
 
     private bool IsRemovedFromStack()

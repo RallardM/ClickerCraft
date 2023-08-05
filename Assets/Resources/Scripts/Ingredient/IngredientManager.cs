@@ -498,20 +498,18 @@ public class IngredientManager : MonoBehaviour
 
     protected static EIngredient GetResultingIngredient()
     {
-        uint index = 0;
-        foreach (EIngredient[] receipe in m_receipes)
+        for (uint i = 0; i < m_receipes.Length; i++)
         {
-            index++;
-            if (receipe == null)
+            if (m_receipes[i] == null)
             {
                 Debug.LogError("Recipe is null");
                 continue;
             }
 
-            if (IsCauldronMatchingRecipe(receipe))
+            if (IsCauldronMatchingRecipe(m_receipes[i]))
             {
                 Debug.Log("Recipe found");
-                return GetResultingIngredient(index);
+                return GetResultingIngredient(i);
             }
         }
         return EIngredient.Count;

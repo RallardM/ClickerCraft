@@ -98,6 +98,50 @@ public class IngredientPool : IngredientManager
         }
     }
 
+    public static void ClearContainerTransformPool(EUiSlotContainer uiSlotContainer)
+    {
+        switch (uiSlotContainer)
+        {
+            case EUiSlotContainer.Solve:
+                SolveIngredientTransforms.Clear();
+                break;
+
+            case EUiSlotContainer.Cauldron:
+                CauldronIngredientTransforms.Clear();
+                break;
+
+            case EUiSlotContainer.Coagula:
+                CoagulaIngredientTransforms.Clear();
+                break;
+
+            default:
+                Debug.LogError("Unknown container");
+                break;
+        }
+    }
+
+    public static void ClearContainerTransitPool(EUiSlotContainer uiSlotContainer)
+    {
+        switch (uiSlotContainer)
+        {
+            case EUiSlotContainer.Solve:
+                IngredientsTransitToSolve.Clear();
+                break;
+
+            case EUiSlotContainer.Cauldron:
+                IngredientsTransitToCauldron.Clear();
+                break;
+
+            case EUiSlotContainer.Coagula:
+                IngredientsTransitToCoagula.Clear();
+                break;
+
+            default:
+                Debug.LogError("Unknown container");
+                break;
+        }
+    }
+
     public static void RemoveIngredientFromTransitPool(IngredientData ingredientData, EUiSlotContainer uiSlotContainer)
     {
         switch (uiSlotContainer)
@@ -142,6 +186,23 @@ public class IngredientPool : IngredientManager
             default:
                 Debug.LogError("No pool found for this slot : " + uiSlotContainer);
                 break;
+        }
+    }
+
+    public static void DestroyAllGameObjectsFromContainer(EUiSlotContainer uiSlotContainer)
+    {
+        foreach (GameObject prefabTransform in GetIngredientsParentSlotsPool(uiSlotContainer))
+        {
+            if (prefabTransform.transform.childCount == 0)
+            {
+                continue;
+            }
+
+            Transform ingredient = prefabTransform.transform.GetChild(0);
+            if (ingredient != null)
+            {
+                Destroy(ingredient.gameObject);
+            }
         }
     }
 
@@ -248,14 +309,6 @@ public class IngredientPool : IngredientManager
             {
                 continue;
             }
-
-            // else increment and return if the ingredient is the same and has not reached the max quantity
-            //else
-            //{
-            //    //Debug.Log("Incrementing ingredient");
-            //    prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity++;
-            //    return;
-            //}
 
             if (prefabTransform.GetComponent<IngredientInteraction>().CurrentQuantity + LastClickedIngredientQuantity <= ingredientInContainer.MaxQuantity)
             {
@@ -406,7 +459,7 @@ public class IngredientPool : IngredientManager
         }
     }
 
-    private static IEnumerable<GameObject> GetIngredientsParentSlotsPool(EUiSlotContainer uiSlotContainer)
+    private static GameObject[] GetIngredientsParentSlotsPool(EUiSlotContainer uiSlotContainer)
     {
         switch (uiSlotContainer)
         {

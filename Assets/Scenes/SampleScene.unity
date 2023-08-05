@@ -5599,6 +5599,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2655602562615986053, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
     - target: {fileID: 3222694110889364987, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5670,6 +5674,10 @@ PrefabInstance:
     - target: {fileID: 3822547973165699302, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4348413919414484779, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
       objectReference: {fileID: 0}
     - target: {fileID: 4410642690402583655, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5727,6 +5735,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Solve
       objectReference: {fileID: 0}
+    - target: {fileID: 5159159016167422057, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
     - target: {fileID: 5763152352151581207, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5751,6 +5763,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6057956276443614892, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
+    - target: {fileID: 6203018933356392949, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
     - target: {fileID: 6303042326750300857, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5774,6 +5794,22 @@ PrefabInstance:
     - target: {fileID: 6303042326750300857, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6785842524327650676, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885369274478097528, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
+    - target: {fileID: 7136899831359849460, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130085691018515179, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
+      propertyPath: m_TagString
+      value: Solve
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f409faaf8eb8074d87fd0ff6ce061df, type: 3}
