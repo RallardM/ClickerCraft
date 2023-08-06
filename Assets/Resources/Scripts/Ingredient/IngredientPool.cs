@@ -424,7 +424,7 @@ public class IngredientPool : IngredientManager
     public static void PrepareCauldronDictionary()
     {
         // Populate the dictionary with the ingredient counts from the cauldronIngredients list
-        foreach (Transform ingredientTransorm in IngredientPool.CauldronIngredientTransforms)
+        foreach (Transform ingredientTransorm in CauldronIngredientTransforms)
         {
             uint ingredientQuantity = ingredientTransorm.GetComponent<IngredientInteraction>().CurrentQuantity;
             for (int i = 0; i < ingredientQuantity; i++)
@@ -449,29 +449,25 @@ public class IngredientPool : IngredientManager
                     // Add the ingredient to the dictionary with a count of 1
                     m_cauldronIngredientDictionary[currentIngredient] = 1;
                 }
-
-                //// Add the quantity of the ingredient to the dictionary
-                //cauldronIngredientCountsDictionary[currentIngredientData.Ingredient] += ingredientTransorm.GetComponent<IngredientInteraction>().CurrentQuantity;
             }
         }
+    }
+
+    public static void ClearCauldronDictionary()
+    {
+        m_cauldronIngredientDictionary.Clear();
     }
 
     public static bool IsCauldronMatchingRecipe(EIngredient[] receipe)
     {
         // Destination dictionary
         Dictionary<EIngredient, uint> tempCauldronIngredientDictionary = new Dictionary<EIngredient, uint>();
-
-        // Pass the content of the cauldron dictionary to the temp dictionary
-        foreach (var kvp in m_cauldronIngredientDictionary)
-        {
-            // Add each key-value pair to the destination dictionary
-            tempCauldronIngredientDictionary[kvp.Key] = kvp.Value;
-        }
+        bool hasTempCauldronBeenUsed = false; // Needed instead of Count because Count is not reset to 0 when the dictionary is cleared
 
         // Iterate through the recipe ingredients and try to find a match in the cauldronIngredientCounts dictionary
         foreach (EIngredient ingredient in receipe)
         {
-            bool isIngredientInDictionary = tempCauldronIngredientDictionary.ContainsKey(ingredient);
+            bool isIngredientInDictionary = m_cauldronIngredientDictionary.ContainsKey(ingredient);
             //bool isIngredientCountZero = cauldronIngredientCountsDictionary[ingredient] <= 0;
             bool isIngredientNull = (ingredient == EIngredient.Count);
 
@@ -481,7 +477,30 @@ public class IngredientPool : IngredientManager
                 return false;
             }
 
+            // If the temp dictionary has not been intialized, populate it with the cauldron dictionary
+            // by populating it after the first return false, we diminush the calls to this step
+            if (hasTempCauldronBeenUsed == false)
+            {
+                // Pass the content of the cauldron dictionary to the temp dictionary
+                foreach (var kvp in m_cauldronIngredientDictionary)
+                {
+                    // Add each key-value pair to the destination dictionary
+                    tempCauldronIngredientDictionary[kvp.Key] = kvp.Value;
+                }
+                hasTempCauldronBeenUsed = true;
+            }
+
+            if (tempCauldronIngredientDictionary.ContainsKey(ingredient) == false)
+            {
+                continue;
+            }
+
             tempCauldronIngredientDictionary[ingredient]--;
+
+            if (tempCauldronIngredientDictionary[ingredient] <= 0)
+            {
+                tempCauldronIngredientDictionary.Remove(ingredient);
+            }
         }
 
         if (tempCauldronIngredientDictionary.Count > 0)

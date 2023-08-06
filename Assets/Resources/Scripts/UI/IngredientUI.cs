@@ -45,6 +45,12 @@ public class IngredientUI : UIManager
         // If the image has no sprite but the , load the corresponding sprite
         if (m_ingredientInteraction != null && m_image.sprite == null)
         {
+            if (m_ingredientInteraction.IngredientData == null)
+            {
+                Debug.LogError("The ingredient data is null, the ingredient is : " + gameObject.name);
+                return;
+            }
+
             m_image.sprite = m_ingredientInteraction.IngredientData.Sprite;
 
             // Set the ingredient prefab transform to visible

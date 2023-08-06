@@ -17,10 +17,11 @@ public class CraftingInteraction : IngredientManager, IPointerClickHandler
         }
 
         EIngredient resultingIngredient = GetResultingIngredient();
-
+        
         UIManager.LastClickedIngredientQuantity = 1;
         IngredientPool.AddIngredientToTransitPool(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula);
         
+        IngredientPool.ClearCauldronDictionary();
         IngredientPool.ClearContainerTransformPool(UIManager.EUiSlotContainer.Cauldron);
         IngredientPool.ClearContainerTransitPool(UIManager.EUiSlotContainer.Cauldron);
         SetContainerPreviousIngredientCount(UIManager.EUiSlotContainer.Cauldron, 0);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UIManager;
 
@@ -286,6 +287,11 @@ public class IngredientManager : MonoBehaviour
             if (receipe == null)
             {
                 Debug.LogError("Recipe is null");
+                continue;
+            }
+
+            if (receipe.Contains(EIngredient.Count))
+            {
                 continue;
             }
 
