@@ -8,6 +8,8 @@ public class CraftingInteraction : IngredientManager, IPointerClickHandler
         // Update the UI cauldron slots in case they have changed
         IngredientPool.UpdateContainerIngredients(IngredientPool.CauldronIngredientTransforms, UIManager.EUiSlotContainer.Cauldron);
 
+        IngredientPool.PrepareCauldronDictionary();
+
         if (!CheckCauldronIngredients())
         {
             Debug.Log("Ingredients are not valid");
@@ -18,6 +20,7 @@ public class CraftingInteraction : IngredientManager, IPointerClickHandler
 
         UIManager.LastClickedIngredientQuantity = 1;
         IngredientPool.AddIngredientToTransitPool(GetIngredientData(resultingIngredient), UIManager.EUiSlotContainer.Coagula);
+        
         IngredientPool.ClearContainerTransformPool(UIManager.EUiSlotContainer.Cauldron);
         IngredientPool.ClearContainerTransitPool(UIManager.EUiSlotContainer.Cauldron);
         SetContainerPreviousIngredientCount(UIManager.EUiSlotContainer.Cauldron, 0);

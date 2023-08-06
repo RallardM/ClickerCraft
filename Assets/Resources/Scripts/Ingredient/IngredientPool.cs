@@ -21,6 +21,8 @@ public class IngredientPool : IngredientManager
     public static List<Transform> CauldronIngredientTransforms { get { return m_cauldronIngredientTransforms; } set { m_cauldronIngredientTransforms = value; } }
     public static List<Transform> CoagulaIngredientTransforms { get { return m_coagulaIngredientTransforms; } set { m_coagulaIngredientTransforms = value; } }
 
+    private static Dictionary<EIngredient, uint> m_cauldronIngredientDictionary = new Dictionary<EIngredient, uint>();
+
     public static void AddIngredientToTransitPool(IngredientData ingredient, EUiSlotContainer uiSlotContainer)
     {
         if (ingredient == null)
@@ -415,6 +417,174 @@ public class IngredientPool : IngredientManager
             default:
                 Debug.LogError("No pool found for this slot");
                 return null;
+        }
+    }
+
+
+    public static void PrepareCauldronDictionary()
+    {
+        // Populate the dictionary with the ingredient counts from the cauldronIngredients list
+        foreach (Transform ingredientTransorm in IngredientPool.CauldronIngredientTransforms)
+        {
+            uint ingredientQuantity = ingredientTransorm.GetComponent<IngredientInteraction>().CurrentQuantity;
+            for (int i = 0; i < ingredientQuantity; i++)
+            {
+                if (ingredientTransorm.GetComponent<IngredientInteraction>().IngredientData == null)
+                {
+                    Debug.Log("Ingredient data is null");
+                }
+
+                IngredientData currentIngredientData = ingredientTransorm.GetComponent<IngredientInteraction>().IngredientData;
+                EIngredient currentIngredient = currentIngredientData.Ingredient;
+                bool isIngredientInDictionary = m_cauldronIngredientDictionary.ContainsKey(currentIngredient);
+
+                // Add ingredient to the dictionary
+                if (isIngredientInDictionary)
+                {
+                    // Increment the count of the existing ingredient in the dictionary
+                    m_cauldronIngredientDictionary[currentIngredient]++;
+                }
+                else
+                {
+                    // Add the ingredient to the dictionary with a count of 1
+                    m_cauldronIngredientDictionary[currentIngredient] = 1;
+                }
+
+                //// Add the quantity of the ingredient to the dictionary
+                //cauldronIngredientCountsDictionary[currentIngredientData.Ingredient] += ingredientTransorm.GetComponent<IngredientInteraction>().CurrentQuantity;
+            }
+        }
+    }
+
+    public static bool IsCauldronMatchingRecipe(EIngredient[] receipe)
+    {
+        // Destination dictionary
+        Dictionary<EIngredient, uint> tempCauldronIngredientDictionary = new Dictionary<EIngredient, uint>();
+
+        // Pass the content of the cauldron dictionary to the temp dictionary
+        foreach (var kvp in m_cauldronIngredientDictionary)
+        {
+            // Add each key-value pair to the destination dictionary
+            tempCauldronIngredientDictionary[kvp.Key] = kvp.Value;
+        }
+
+        // Iterate through the recipe ingredients and try to find a match in the cauldronIngredientCounts dictionary
+        foreach (EIngredient ingredient in receipe)
+        {
+            bool isIngredientInDictionary = tempCauldronIngredientDictionary.ContainsKey(ingredient);
+            //bool isIngredientCountZero = cauldronIngredientCountsDictionary[ingredient] <= 0;
+            bool isIngredientNull = (ingredient == EIngredient.Count);
+
+            // If the ingredient is not in the dictionary or the quantity is 0 or the ingredient is Count (see basic ingredients receipe array's commentary -> m_fireReceipe)
+            if (isIngredientInDictionary == false || isIngredientNull)
+            {
+                return false;
+            }
+
+            tempCauldronIngredientDictionary[ingredient]--;
+        }
+
+        if (tempCauldronIngredientDictionary.Count > 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static EIngredient GetIngredientFromIndex(uint indexOfReceipe)
+    {
+        switch (indexOfReceipe)
+        {
+            case (int)EIngredient.Blaze:
+                return EIngredient.Blaze;
+
+            case (int)EIngredient.Coal:
+                return EIngredient.Coal;
+
+            case (int)EIngredient.Vapor:
+                return EIngredient.Vapor;
+
+            case (int)EIngredient.Fireburst:
+                return EIngredient.Fireburst;
+
+            case (int)EIngredient.Archea:
+                return EIngredient.Archea;
+
+            case (int)EIngredient.Magma:
+            case (int)EIngredient.MagmaExtended:
+                return EIngredient.Magma;
+
+            case (int)EIngredient.Rock:
+                return EIngredient.Rock;
+
+            case (int)EIngredient.Mud:
+                return EIngredient.Mud;
+
+            case (int)EIngredient.Dust:
+                return EIngredient.Dust;
+
+            case (int)EIngredient.Seed:
+                return EIngredient.Seed;
+
+            case (int)EIngredient.Steam:
+            case (int)EIngredient.SteamExtended:
+                return EIngredient.Steam;
+
+            case (int)EIngredient.Pond:
+            case (int)EIngredient.PondExtended:
+                return EIngredient.Pond;
+
+            case (int)EIngredient.Puddle:
+                return EIngredient.Puddle;
+
+            case (int)EIngredient.Rain:
+                return EIngredient.Rain;
+
+            case (int)EIngredient.Algae:
+                return EIngredient.Algae;
+
+            case (int)EIngredient.Firebolt:
+            case (int)EIngredient.FireboltExtended:
+                return EIngredient.Firebolt;
+
+            case (int)EIngredient.Duststorm:
+            case (int)EIngredient.DuststormExtended:
+                return EIngredient.Duststorm;
+
+            case (int)EIngredient.Thunderstorm:
+            case (int)EIngredient.ThunderstormExtended:
+                return EIngredient.Thunderstorm;
+
+            case (int)EIngredient.Tornado:
+                return EIngredient.Tornado;
+
+            case (int)EIngredient.Fungi:
+            case (int)EIngredient.FungiExtended:
+                return EIngredient.Fungi;
+
+            case (int)EIngredient.Pyroid:
+            case (int)EIngredient.PyroidExtended:
+                return EIngredient.Pyroid;
+
+            case (int)EIngredient.Golem:
+            case (int)EIngredient.GolemExtended:
+                return EIngredient.Golem;
+
+            case (int)EIngredient.Undine:
+            case (int)EIngredient.UndineExtended:
+                return EIngredient.Undine;
+
+            case (int)EIngredient.Sylph:
+            case (int)EIngredient.SylphExtended:
+                return EIngredient.Sylph;
+
+            case (int)EIngredient.Spirit:
+                return EIngredient.Spirit;
+
+            default:
+                Debug.LogError("No ingredient found for receipe index : " + indexOfReceipe);
+                return EIngredient.Count;
         }
     }
 

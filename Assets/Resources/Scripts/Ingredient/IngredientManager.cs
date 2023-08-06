@@ -257,142 +257,6 @@ public class IngredientManager : MonoBehaviour
         };// Total 42 elementsthrow new NotImplementedException();
     }
 
-    private static bool IsCauldronMatchingRecipe(EIngredient[] receipe)
-    {
-        // Create a dictionary to store the ingredient counts in the cauldron
-        Dictionary<EIngredient, uint> cauldronIngredientCountsDictionary = new Dictionary<EIngredient, uint>();
-
-        // Populate the dictionary with the ingredient counts from the cauldronIngredients list
-        foreach (Transform ingredientTransorm in IngredientPool.CauldronIngredientTransforms)
-        {
-            if (ingredientTransorm.GetComponent<IngredientInteraction>().IngredientData == null)
-            {
-                Debug.Log("Ingredient data is null");
-            }
-
-            IngredientData ingredientInCauldron = ingredientTransorm.GetComponent<IngredientInteraction>().IngredientData;
-
-            // If not in the dictionary, put it to 0
-            if (!cauldronIngredientCountsDictionary.ContainsKey(ingredientInCauldron.Ingredient))
-            {
-                cauldronIngredientCountsDictionary[ingredientInCauldron.Ingredient] = 0;
-            }
-
-            // Add the quantity of the ingredient to the dictionary
-            cauldronIngredientCountsDictionary[ingredientInCauldron.Ingredient] += ingredientTransorm.GetComponent<IngredientInteraction>().CurrentQuantity;
-        }
-
-        // Iterate through the recipe ingredients and try to find a match in the cauldronIngredientCounts dictionary
-        foreach (EIngredient ingredient in receipe)
-        {
-            // If the ingredient is not in the dictionary or the quantity is 0 or the ingredient is Count (see basic ingredients receipe array's commentary -> m_fireReceipe)
-            if (!cauldronIngredientCountsDictionary.ContainsKey(ingredient) || cauldronIngredientCountsDictionary[ingredient] <= 0 || ingredient == EIngredient.Count)
-            {
-                return false;
-            }
-
-            cauldronIngredientCountsDictionary[ingredient]--;
-        }
-
-        return true;
-    }
-
-    private static EIngredient GetResultingIngredient(uint indexOfReceipe)
-    {
-        switch (indexOfReceipe)
-        {
-            case (int)EIngredient.Blaze:
-                return EIngredient.Blaze;
-
-            case (int)EIngredient.Coal:
-                return EIngredient.Coal;
-
-            case (int)EIngredient.Vapor:
-                return EIngredient.Vapor;
-
-            case (int)EIngredient.Fireburst:
-                return EIngredient.Fireburst;
-
-            case (int)EIngredient.Archea:
-                return EIngredient.Archea;
-
-            case (int)EIngredient.Magma:
-            case (int)EIngredient.MagmaExtended:
-                return EIngredient.Magma;
-
-            case (int)EIngredient.Rock:
-                return EIngredient.Rock;
-
-            case (int)EIngredient.Mud:
-                return EIngredient.Mud;
-
-            case (int)EIngredient.Dust:
-                return EIngredient.Dust;
-
-            case (int)EIngredient.Seed:
-                return EIngredient.Seed;
-
-            case (int)EIngredient.Steam:
-            case (int)EIngredient.SteamExtended:
-                return EIngredient.Steam;
-
-            case (int)EIngredient.Pond:
-            case (int)EIngredient.PondExtended:
-                return EIngredient.Pond;
-
-            case (int)EIngredient.Puddle:
-                return EIngredient.Puddle;
-
-            case (int)EIngredient.Rain:
-                return EIngredient.Rain;
-
-            case (int)EIngredient.Algae:
-                return EIngredient.Algae;
-
-            case (int)EIngredient.Firebolt:
-            case (int)EIngredient.FireboltExtended:
-                return EIngredient.Firebolt;
-
-            case (int)EIngredient.Duststorm:
-            case (int)EIngredient.DuststormExtended:
-                return EIngredient.Duststorm;
-
-            case (int)EIngredient.Thunderstorm:
-            case (int)EIngredient.ThunderstormExtended:
-                return EIngredient.Thunderstorm;
-
-            case (int)EIngredient.Tornado:
-                return EIngredient.Tornado;
-
-            case (int)EIngredient.Fungi:
-            case (int)EIngredient.FungiExtended:
-                return EIngredient.Fungi;
-
-            case (int)EIngredient.Pyroid:
-            case (int)EIngredient.PyroidExtended:
-                return EIngredient.Pyroid;
-
-            case (int)EIngredient.Golem:
-            case (int)EIngredient.GolemExtended:
-                return EIngredient.Golem;
-
-            case (int)EIngredient.Undine:
-            case (int)EIngredient.UndineExtended:
-                return EIngredient.Undine;
-
-            case (int)EIngredient.Sylph:
-            case (int)EIngredient.SylphExtended:
-                return EIngredient.Sylph;
-
-            case (int)EIngredient.Spirit:
-                return EIngredient.Spirit;
-
-            default:
-                Debug.LogError("No ingredient found for receipe index : " + indexOfReceipe);
-                return EIngredient.Count;
-        }
-    }
-
     protected static void SetContainerPreviousIngredientCount(EUiSlotContainer uiSlotContainer, uint newCount)
     {
         switch (uiSlotContainer)
@@ -415,69 +279,6 @@ public class IngredientManager : MonoBehaviour
         }
     }
 
-    //protected static void ResetUiContainerPreviousIngredientCount(EUiSlotContainer uiSlotContainer)
-    //{
-    //    if (uiSlotContainer == EUiSlotContainer.Solve)
-    //    {
-    //        m_solveContainerPreviousIngredientCount = 0;
-    //    }
-    //    else if (uiSlotContainer == EUiSlotContainer.Cauldron)
-    //    {
-    //        m_cauldronContainerPreviousIngredientCount = 0;
-    //    }
-    //    else if (uiSlotContainer == EUiSlotContainer.Coagula)
-    //    {
-    //        m_coagulaContainerPreviousIngredientCount = 0;
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("uiSlotContainer is null");
-    //    }
-    //}
-
-    //protected static void ReduceUiContainerPreviousIngredientCount(EUiSlotContainer uiSlotContainer)
-    //{
-    //    switch (uiSlotContainer)
-    //    {
-    //        case EUiSlotContainer.Solve:
-    //            if (m_solveContainerPreviousIngredientCount > 0)
-    //            {
-    //                m_solveContainerPreviousIngredientCount--;
-    //            }
-    //            else
-    //            {
-    //                Debug.LogError("m_solveContainerPreviousIngredientCount is already 0");
-    //            }
-    //            break;
-
-    //        case EUiSlotContainer.Cauldron:
-    //            if (m_cauldronContainerPreviousIngredientCount > 0)
-    //            {
-    //                m_cauldronContainerPreviousIngredientCount--;
-    //            }
-    //            else
-    //            {
-    //                Debug.LogError("m_cauldronContainerPreviousIngredientCount is already 0");
-    //            }
-    //            break;
-
-    //        case EUiSlotContainer.Coagula:
-    //            if (m_coagulaContainerPreviousIngredientCount > 0)
-    //            {
-    //                m_coagulaContainerPreviousIngredientCount--;
-    //            }
-    //            else
-    //            {
-    //                Debug.LogError("m_coagulaContainerPreviousIngredientCount is already 0");
-    //            }
-    //            break;
-
-    //        default:
-    //            Debug.LogError("uiSlotContainer is null");
-    //            break;
-    //    }
-    //}
-
     protected static bool CheckCauldronIngredients()
     {
         foreach (EIngredient[] receipe in m_receipes)
@@ -488,7 +289,7 @@ public class IngredientManager : MonoBehaviour
                 continue;
             }
 
-            if (IsCauldronMatchingRecipe(receipe))
+            if (IngredientPool.IsCauldronMatchingRecipe(receipe))
             {
                 return true;
             }
@@ -506,10 +307,10 @@ public class IngredientManager : MonoBehaviour
                 continue;
             }
 
-            if (IsCauldronMatchingRecipe(m_receipes[i]))
+            if (IngredientPool.IsCauldronMatchingRecipe(m_receipes[i]))
             {
                 Debug.Log("Recipe found");
-                return GetResultingIngredient(i);
+                return IngredientPool.GetIngredientFromIndex(i);
             }
         }
         return EIngredient.Count;
