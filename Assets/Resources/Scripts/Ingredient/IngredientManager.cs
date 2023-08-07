@@ -322,7 +322,7 @@ public class IngredientManager : MonoBehaviour
         return EIngredient.Count;
     }
 
-    protected IngredientData GetIngredientData(EIngredient resultingIngredient) //TODO
+    protected IngredientData GetIngredientData(EIngredient resultingIngredient)
     {
         switch (resultingIngredient)
         {
