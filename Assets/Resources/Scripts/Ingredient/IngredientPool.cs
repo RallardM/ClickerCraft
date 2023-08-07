@@ -21,7 +21,7 @@ public class IngredientPool : IngredientManager
     public static List<Transform> CauldronIngredientTransforms { get { return m_cauldronIngredientTransforms; } set { m_cauldronIngredientTransforms = value; } }
     public static List<Transform> CoagulaIngredientTransforms { get { return m_coagulaIngredientTransforms; } set { m_coagulaIngredientTransforms = value; } }
 
-    private static Dictionary<EIngredient, uint> m_cauldronIngredientDictionary = new Dictionary<EIngredient, uint>();
+    private static Dictionary<EIngredient, int> m_cauldronIngredientDictionary = new Dictionary<EIngredient, int>();
 
     public static void AddIngredientToTransitPool(IngredientData ingredient, EUiSlotContainer uiSlotContainer)
     {
@@ -420,6 +420,11 @@ public class IngredientPool : IngredientManager
         }
     }
 
+    public static int GetCauldronDictionaryTotalValue()
+    {
+        // Source : https://forum.unity.com/threads/how-to-properly-get-sum-of-dictionary-values.1036081/
+        return m_cauldronIngredientDictionary.Values.Sum();
+    }
 
     public static void PrepareCauldronDictionary()
     {
@@ -461,7 +466,7 @@ public class IngredientPool : IngredientManager
     public static bool IsCauldronMatchingRecipe(EIngredient[] receipe)
     {
         // Destination dictionary
-        Dictionary<EIngredient, uint> tempCauldronIngredientDictionary = new Dictionary<EIngredient, uint>();
+        Dictionary<EIngredient, int> tempCauldronIngredientDictionary = new Dictionary<EIngredient, int>();
         bool hasTempCauldronBeenUsed = false; // Needed instead of Count because Count is not reset to 0 when the dictionary is cleared
 
         // Iterate through the recipe ingredients and try to find a match in the cauldronIngredientCounts dictionary

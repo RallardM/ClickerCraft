@@ -233,7 +233,7 @@ public class IngredientManager : MonoBehaviour
 
     public void Update()
     {
-        // Putting the update in IngredientPool didn't work
+        // Putting the update in IngredientPool does not work because it is not a GameObject situated in the hierachy
         IngredientPool.UpdateContainerContent(EUiSlotContainer.Solve);
         IngredientPool.UpdateContainerContent(EUiSlotContainer.Cauldron);
         IngredientPool.UpdateContainerContent(EUiSlotContainer.Coagula);
