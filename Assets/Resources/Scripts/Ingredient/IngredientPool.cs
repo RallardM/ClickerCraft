@@ -13,9 +13,9 @@ public class IngredientPool : IngredientManager
     private static List<Transform> m_cauldronIngredientTransforms = new List<Transform>();
     private static List<Transform> m_coagulaIngredientTransforms = new List<Transform>();
 
-    public static List<IngredientData> IngredientsTransitToSolve { get { return m_ingredientsTransitToSolve; } set { m_ingredientsTransitToSolve = value; } }
-    public static List<IngredientData> IngredientsTransitToCauldron { get { return m_ingredientsTransitToCauldron; } set { m_ingredientsTransitToCauldron = value; } }
-    public static List<IngredientData> IngredientsTransitToCoagula { get { return m_ingredientsTransitToCoagula; } set { m_ingredientsTransitToCoagula = value; } }
+    //public static List<IngredientData> IngredientsTransitToSolve { get { return m_ingredientsTransitToSolve; } set { m_ingredientsTransitToSolve = value; } }
+    //public static List<IngredientData> IngredientsTransitToCauldron { get { return m_ingredientsTransitToCauldron; } set { m_ingredientsTransitToCauldron = value; } }
+    //public static List<IngredientData> IngredientsTransitToCoagula { get { return m_ingredientsTransitToCoagula; } set { m_ingredientsTransitToCoagula = value; } }
 
     public static List<Transform> SolveIngredientTransforms { get { return m_solveIngredientTransforms; } set { m_solveIngredientTransforms = value; } }
     public static List<Transform> CauldronIngredientTransforms { get { return m_cauldronIngredientTransforms; } set { m_cauldronIngredientTransforms = value; } }
@@ -31,7 +31,7 @@ public class IngredientPool : IngredientManager
             return;
         }
 
-        List <IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
+       
 
         // Update the container slot ingredients in case they have changed
         UpdateContainerIngredients(CauldronIngredientTransforms, uiSlotContainer);
@@ -55,6 +55,7 @@ public class IngredientPool : IngredientManager
             }
         }
 
+        List<IngredientData> ingredientToTransitPool = GetTransitPool(uiSlotContainer);
         if (ingredientToTransitPool.Count == GetContainer(uiSlotContainer).Count())
         {
             Debug.Log("The container is full");
@@ -127,15 +128,15 @@ public class IngredientPool : IngredientManager
         switch (uiSlotContainer)
         {
             case EUiSlotContainer.Solve:
-                IngredientsTransitToSolve.Clear();
+                m_ingredientsTransitToSolve.Clear();
                 break;
 
             case EUiSlotContainer.Cauldron:
-                IngredientsTransitToCauldron.Clear();
+                m_ingredientsTransitToCauldron.Clear();
                 break;
 
             case EUiSlotContainer.Coagula:
-                IngredientsTransitToCoagula.Clear();
+                m_ingredientsTransitToCoagula.Clear();
                 break;
 
             default:
@@ -150,17 +151,17 @@ public class IngredientPool : IngredientManager
         {
             case EUiSlotContainer.Solve:
                 //Debug.Log("Remove ingredient from solve");
-                IngredientsTransitToSolve.Remove(ingredientData);
+                m_ingredientsTransitToSolve.Remove(ingredientData);
                 break;
 
             case EUiSlotContainer.Cauldron:
                 //Debug.Log("Remove ingredient from cauldron");
-                IngredientsTransitToCauldron.Remove(ingredientData);
+                m_ingredientsTransitToCauldron.Remove(ingredientData);
                 break;
 
             case EUiSlotContainer.Coagula:
                 //Debug.Log("Remove ingredient from coagula");
-                IngredientsTransitToCoagula.Remove(ingredientData);
+                m_ingredientsTransitToCoagula.Remove(ingredientData);
                 break;
 
             default:
@@ -337,7 +338,7 @@ public class IngredientPool : IngredientManager
 
         // Return if the quantity in the list of ingredient to transfer has not changed
         uint previousIngredientCount = GetContainerPreviousIngredientCount(uiSlotContainer);
-        int transitPoolCount = ingredientToTransitPool.Count;
+        uint transitPoolCount = (uint)ingredientToTransitPool.Count;
         if (previousIngredientCount == transitPoolCount)
         {
             return;
@@ -352,7 +353,7 @@ public class IngredientPool : IngredientManager
         // of ingredient to transfer has changed since the last time it was updated here :
         SetContainerPreviousIngredientCount(uiSlotContainer, (uint)GetTransitPool(uiSlotContainer).Count);
 
-        for (int i = 0; i < ingredientToTransitPool.Count; i++)
+        for (int i = 0; i < transitPoolCount; i++)
         {
             if (GetContainerSlotFromIndex(uiSlotContainer, i) == null)
             {
@@ -381,6 +382,7 @@ public class IngredientPool : IngredientManager
                 continue;
             }
 
+            // Transfer the ingredient data from the clicked ingredient to the new ingredient created in the current container
             IngredientInteraction ingredientInteraction = ingredientPrefabTransform.GetComponent<IngredientInteraction>();
 
             if (ingredientInteraction == null)
@@ -395,6 +397,7 @@ public class IngredientPool : IngredientManager
             ingredientInteraction.CurrentQuantity = LastClickedIngredientQuantity;
             LastClickedIngredient = null;
             LastClickedIngredientQuantity = 0;
+            break;
         }
     }
 
@@ -404,15 +407,15 @@ public class IngredientPool : IngredientManager
         {
             case EUiSlotContainer.Solve:
                 //Debug.Log("Returning IngredientsTransitToSolve");
-                return IngredientsTransitToSolve;
+                return m_ingredientsTransitToSolve;
 
             case EUiSlotContainer.Cauldron:
                 //Debug.Log("Returning IngredientsTransitToCauldron");
-                return IngredientsTransitToCauldron;
+                return m_ingredientsTransitToCauldron;
 
             case EUiSlotContainer.Coagula:
                 //Debug.Log("Returning IngredientsTransitToCoagula");
-                return IngredientsTransitToCoagula;
+                return m_ingredientsTransitToCoagula;
 
             default:
                 Debug.LogError("No pool found for this slot");
