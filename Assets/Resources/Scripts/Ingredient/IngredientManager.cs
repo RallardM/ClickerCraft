@@ -134,8 +134,7 @@ public class IngredientManager : MonoBehaviour
     private static uint m_coagulaContainerPreviousIngredientCount = 0;
 
     public static GameObject GetIngredientPrefab() { return m_ingredientPrefab; }
-    //public static uint InGameCauldronPreviousIngredientQuantity { get => m_inGameCauldronPreviousIngredientQuantity; set => m_inGameCauldronPreviousIngredientQuantity = value; }
-    
+
     public static IngredientManager GetInstance()
     {
         if (_Instance == null)
