@@ -32,6 +32,7 @@ public class IngredientUI : UIManager
         // Return if the ingredient is not in the cauldron (it is therfore a static basic ingredient)
         if (GetComponent<IngredientInteraction>() == null)
         {
+            UpdateBasicIngredient();
             return;
         }
 
@@ -62,6 +63,12 @@ public class IngredientUI : UIManager
 
     private void UpdateStackText()
     {
+        if (DebugController.m_isInDebugMode)
+        {
+            m_quantityText.gameObject.SetActive(true);
+            return;
+        }
+
         // If the quantity of the ingredient is more than 1 (Is a stack), show the quantity text
         if (m_currentQuantity > SINGLE_INGREDIENT)
         {
@@ -81,5 +88,27 @@ public class IngredientUI : UIManager
             m_currentQuantity = GetComponent<IngredientInteraction>().CurrentQuantity;
             m_quantityText.text = m_currentQuantity.ToString();
         }
+    }
+
+    private void UpdateBasicQuantityText()
+    {
+        // If the quantity of the ingredient has changed, update the quantity text
+        if (m_currentQuantity != GetComponent<BasicIngredientInteraction>().CurrentQuantity)
+        {
+            m_currentQuantity = GetComponent<BasicIngredientInteraction>().CurrentQuantity;
+            m_quantityText.text = m_currentQuantity.ToString();
+        }
+    }
+
+    private void UpdateBasicIngredient()
+    {
+        if (!DebugController.m_isInDebugMode)
+        {
+            m_quantityText.gameObject.SetActive(false);
+            return;
+        }
+
+        UpdateBasicQuantityText();
+        UpdateStackText();
     }
 }

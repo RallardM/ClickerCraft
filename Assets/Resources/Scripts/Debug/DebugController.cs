@@ -1,11 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DebugController : MonoBehaviour
 {
     private static DebugController _Instance;
     private Transform m_debugMenuCanvas;
-    public bool m_isInDebugMode = false;
+    static public bool m_isInDebugMode = false;
 
     public static DebugController GetInstance()
     {
@@ -26,7 +25,6 @@ public class DebugController : MonoBehaviour
         }
     }
 
-    [System.Obsolete]
     private void Awake()
     {
         _Instance = this;

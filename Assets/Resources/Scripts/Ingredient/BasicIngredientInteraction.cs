@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 public class BasicIngredientInteraction : IngredientManager, IPointerClickHandler
 {
     [SerializeField] IngredientData m_ingredientData;
+    private uint m_currentQuantity = 1;
 
+    public uint CurrentQuantity { get { return m_currentQuantity; } set { m_currentQuantity = value; } }
     public IngredientData IngredientData { get { return m_ingredientData; } set { m_ingredientData = value; } }
 
     public void OnPointerClick(PointerEventData eventData)
